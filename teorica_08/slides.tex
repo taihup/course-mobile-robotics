@@ -1,0 +1,43 @@
+% Estas slides tienen que abrirse con el programa pdfpc que soporta videos embebidos
+% el comando es: pdfpc -g slides.pdf
+% para los videos se requiere ubuntu-restricted-extras
+% para la bibliografía se requiere biber y configurar texstudio
+
+%\documentclass[compress,handout]{beamer}
+\documentclass[aspectratio=169,compress]{beamer}
+
+% add beamer preamble
+\input{../../common/beamer_preamble}
+
+% add latex preamble
+\input{../../common/latex_preamble}
+
+% add math preamble
+\input{../../common/math_preamble}
+
+% add bibliography resource
+\renewcommand*{\bibfont}{\footnotesize} % change bibliograhy size
+\bibliography{../../common/bibliography.bib}
+
+\subtitle{SLAM: Simultaneous Localization and Mapping}
+\title{Robótica Móvil}
+\author{Taihú Pire}
+\institute{Laboratorio de Robótica}
+\titlegraphic{\includegraphics[width=0.4\textwidth]{images/cifasis_logo.pdf}}
+\date{}
+
+\begin{document}
+	
+	% add title page
+	\frame{\titlepage}
+	
+	\section{SLAM}
+	\input{src/slam.tex}
+    
+    \section{Bundle Adjustment}
+    \input{src/bundle_adjustment.tex}
+	
+	\section{Bibliografía}
+	\input{src/bibliography.tex}
+	
+\end{document}
