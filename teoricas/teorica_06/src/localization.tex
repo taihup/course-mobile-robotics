@@ -1,144 +1,140 @@
 \begin{frame}
-    \frametitle{Temario para estas slides}
+    \frametitle{Analysis for these slides}
     
     \begin{itemize}
-        \item Bayes filter
-        \item Kalman filter
-        \item Particle filter
+    \item Bayes filter
+    \item Kalman filter
+    \item Particle filter
     \end{itemize}
     
-\end{frame}
-
-\begin{frame}{Localización}
-    \begin{block}{Localización}
-        Es la habilidad que posee una máquina (robot) para localizarse en el espacio.
-    \end{block}
-\end{frame}
-
-
-\begin{frame}
-    \frametitle{Estimación de estado}
+    \end{frame}
     
-    \note{Información obtenida de Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
+    \begin{frame}{Localization}
+    \begin{block}{Localization}
+    It is the ability of a machine (robot) to locate itself in space. \end{block}
+    \end{frame}
+    
+    \begin{frame}
+    \frametitle{State Estimation}
+    
+    \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
     
     \begin{itemize}
-        \item  Estimar el \textbf{estado} $\state$ de un sistema dada las \textbf{observaciones} $\observation$ y \textbf{comandos de control} $\controlCommand$
-        \item Objetivo:
-    \end{itemize}
-    
-    \begin{equation}
-        p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right)
-    \end{equation}
-    
-    Estimación de estado recursiva: Se trata de estimar $\state_{t}$ el estado actual utilizando también el estado inmediatamente anterior $\state_{t-1}$.
-\end{frame}
-
-\begin{frame}{Filtro de Bayes Recursivo}
-    \begin{block}{Ejemplo}
-        \begin{itemize}
-            
-            \item Dado un robot en un mundo de una dimensión, sin conocimiento de en donde se encuentra
-            \item El robot se puede mover hacia delante o atrás
-            \item Supongamos además que hay tres puertas (\alert{landmarks}), el robot puede detectar si se encuentra al lado de una puerta o no.
-        \end{itemize}
-    \end{block}
-
-    \begin{center}
-        \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_example.pdf}
-    \end{center}
-
-\end{frame}
-
-\begin{frame}{Filtro de Bayes Recursivo: Posición inicial}
-    Como en un principio el robot desconoce cual es su posición entonces es igualmente posible que se encuentre en cualquier punto del mundo (\alert{belief}). Esto lo podemos representar matemáticamente diciendo que la \alert{función de distribución de probabilidad} del robot es \alert{uniforme} sobre el mundo en que se encuentra.
-    \begin{center}
-        \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_uniform.pdf}
-    \end{center}
-    
-\end{frame}
-
-\begin{frame}{Filtro de Bayes Recursivo: Medición}
-    
-    Si el robot sensa que se encuentra al lado de una puerta entonces la creencia de su ubicación se se ve alterada de la siguiente manera:
-    
-    \begin{center}
-        \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_sensing.pdf}
-    \end{center}
-    
-    
-    Esta nueva función representa otra distribución de probabilidades llamada \alert{Posterior belief}.
-    
-    La función Posterior belief es la mejor representación de la posición del robot actualmente. Cada ``loma'' representa la evaluación de su posición con respecto a una puerta.
-    
-    La probabilidad $p(\measurement | \state)$ se lee: ``dado que sabemos dónde se encuentra el robot, ¿Cúal es la probabilidad de que observar la puerta?''
-    
-\end{frame}
-
-\begin{frame}{Filtro de Bayes Recursivo: Movimiento}
-    
-    Si \textbf{el robot se mueve hacia la derecha} la creencia es cambiada de acuerdo al movimiento.
-    Así mismo como el movimiento del robot es inexacto, al trasladarse su incertidumbre crece, dicho de otra manera, las lomas son aplanadas. Este aplanamiento matemáticamente se lleva a cabo por medio de la operación de \alert{convolución} entre la función Posterior belief y la función que describe la distancia recorrida.
-    
-    \begin{center}
-        \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_moving.pdf}
-    \end{center}
-    
-    La operación de convolución mide la superposición mientras se desliza una funcion sobre otra.
-    
-\end{frame}
-
-\begin{frame}{Filtro de Bayes Recursivo: Segunda medición}
-    Supongamos que el robot luego de haberse movido sensa nuevamente que se encuentre al lado de una puerta entonces, como antes, la probabilidad se incrementara por un cierto factor la función de probabilidad donde haya una puerta.
-    
-    \begin{center}
-        \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_sensing2.pdf}
-    \end{center}
-\end{frame}
-
-\begin{frame}{Filtro de Bayes Recursivo: Segundo movimiento}
-    Supongamos que el robot se mueve nuevamente...
-    
-    \begin{center}
-        \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_moving2.pdf}
-    \end{center}
-\end{frame}
-
-
-\begin{frame}
-    \frametitle{Estimación de estado}
-    
-    \note{Información obtenida de Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
-    
-    \begin{itemize}
-        \item  Estimar el estado $\state$ de un systema dada las observaciones $\observation$ y comandos de control $\controlCommand$
-        \item Objetivo:
+    \item Estimate the \textbf{state} $\state$ of a system given the \textbf{observations} $\observation$ and \textbf{control commands} $\controlCommand$
+    \item Objective:
     \end{itemize}
     
     \begin{equation}
-        p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right)
+    p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right)
     \end{equation}
     
-    Estimación de estado recursiva: Se trata de estimar $\state_{t}$ el estado actual utilizando también el estado inmediatamente anterior $\state_{t-1}$.
+    Recursive State Estimation: This involves estimating the current state $\state_{t}$ using the immediately preceding state $\state_{t-1}$ as well. \end{frame}
+    
+    \begin{frame}{Recursive Bayes Filter}
+    \begin{block}{Example}
+    \begin{itemize}
+    
+    \item Given a robot in a one-dimensional world, with no knowledge of where it is
+    \item The robot can move forward or backward
+    \item Suppose further that there are three doors (\alert{landmarks}), the robot can detect whether it is next to a door or not.
+    \end{itemize}
+    \end{block}
+    
+    \begin{center}
+    \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_example.pdf}
+    \end{center}
+    
+    \end{frame}
+    
+    \begin{frame}{Recursive Bayes Filter: Initial Position}
+    Since the robot initially does not know its position, it is equally possible that it is located anywhere in the world (\alert{belief}). We can represent this mathematically by saying that the robot's \alert{probability distribution function} is \alert{uniform} over the world it is in.
+    \begin{center}
+    \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_uniform.pdf}
+    \end{center}
+    
+    \end{frame}
+    
+    \begin{frame}{Recursive Bayes Filter: Measurement}
+    
+    If the robot senses that it is next to a door, then its belief about its location is altered as follows:
+    
+    \begin{center}
+    \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_sensing.pdf}
+    \end{center}
+    
+    This new function represents another probability distribution called \alert{Posterior belief}.
+    
+    The Posterior belief function is the best representation of the robot's position currently. Each hill represents the evaluation of its position relative to a door.
+    
+    The probability $p(\measurement | \state)$ reads: ``Given that we know where the robot is, what is the probability of observing the door?''
+    
+    \end{frame}
+    
+    \begin{frame}{Recursive Bayes Filter: Movement}
+    
+    If \textbf{the robot moves to the right}, the belief changes according to the movement.
+    
+    Just as the robot's movement is inaccurate, its uncertainty increases as it moves; in other words, the hills are flattened. This flattening is mathematically carried out through the \alert{convolution} operation between the Posterior belief function and the function that describes the distance traveled.
+    
+    \begin{center}
+    \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_moving.pdf}
+    \end{center}
+    
+    The convolution operation measures the overlap as one function slides over another.
+    
+    \end{frame}
+    
+    \begin{frame}{Recursive Bayes Filter: Second Measurement}
+    Suppose the robot, after moving, senses that it is next to a door again. Then, as before, the probability where there is a door will increase by a certain factor of the probability function.
+    
+    \begin{center}
+    \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_sensing2.pdf}
+    \end{center}
+    \end{frame}
+    
+    \begin{frame}{Recursive Bayes Filter: Second Movement}
+    Suppose the robot moves again...
+    
+    \begin{center}
+    \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_moving2.pdf}
+    \end{center}
 \end{frame}
 
 
 \begin{frame}
-    \frametitle{Estimación de estado}
+    \frametitle{State Estimation}
     
-    \note{Información obtenida de Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
-    Estamos interesados en la creencia (\emph{belief}) del sistema sobre dónde está en el tiempo $t$:
+    \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
+    
+    \begin{itemize}
+    \item Estimate the state $\state$ of a system given the observations $\observation$ and control commands $\controlCommand$
+    \item Objective:
+    \end{itemize}
+    
+    \begin{equation}
+    p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right)
+    \end{equation}
+    
+    Recursive state estimation: This involves estimating the current state $\state_{t}$ using the immediately preceding state $\state_{t-1}$ as well.
+    \end{frame}
+    
+    \begin{frame}
+    \frametitle{State Estimation}
+    
+    \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
+    We are interested in the system's belief (\emph{belief}) about where it is at time $t$:
     
     \begin{equation*}
-    bel(\state_{t}) = p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right) \quad \text{\scriptsize (ecuación de estimación de estado o definición de distribución de probabilidad)}
+    bel(\state_{t}) = p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right) \quad \text{\scriptsize (state estimation equation or probability distribution definition)}
     \end{equation*}
     
-    La ecuación se puede leer como: ``¿dónde estoy ahora $\state_{t}$?, dada todas las observaciones $\observation_{1:t}$ y todos los comandos de control $\controlCommand_{1:t}$''
+    The equation can be read as: ``Where am I now $\state_{t}$, given all observations $\observation_{1:t}$ and all control commands $\controlCommand_{1:t}$''
     
     \vspace{1cm}
     
-    Ahora vamos a simplificar la distribución utilizando la Regla de Bayes:
-
-\end{frame}
+    Now let's simplify the distribution using Bayes' Rule:
+    
+    \end{frame}
 
 
 \begin{frame}
@@ -189,142 +185,140 @@
                             &= \eta \, p\left(\observation_{t} |\state_{t} \right) \int p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right) bel(\state_{t-1}) d \state_{t-1}
                 }
     \end{aligned}$
-    \only<2>{\alert{Regla de Bayes}
-             \note{eta codifica la normalización que realiza el término divisor de la regla de Bayes.}}
-    \only<3>{\alert{Markov assumption. Lo que mido ahora $\observation_{t}$ solo depende del estado actual $\state_{t}$ y es independiente de las mediciones anteriores $\observation_{1:t-1}$ y de todos los comandos  $\controlCommand_{1:t}$}}
-    \only<4>{\alert{Ley de probabilidad total. Es decir, integramos sobre todos los estados anteriores posibles. Se puede intepretar como ``¿Dónde estámos ahora, dado el estado anterior $\state_{t-1}$ multiplicado porque tan probable es que se alcance dicho estado  $\state_{t-1}$.''}}
-    \only<5>{\alert{Markov assumption. Si $\state_{t-1}$ es dado, entonces son irrelevantes todas las mediciones $\observation_{1:t-1}$ y comandos $\controlCommand_{t-1}$. Nos Importa $\controlCommand_{t}$ porque nos dice cómo evoluciona de $\state_{t-1}$ a $\state_{t}$ }}
-    \only<6>{\alert{Independence assumption. Asumimos que un comando futuro $\controlCommand_{t}$ no nos ayuda a saber nuestro estado actual $\state_{t}$.}} \note{Perdemos información ya que asumismos independencia. Asumismo que un comando futuro no nos ayuda en saber nuestra pose actual. Esto no siempre es cierto. Por ejemplo cuando un robot se encuentra muy cerca de una pared. El sistema de control difícilmente haría un comando que haga que el robot vaya hacia la pared. Por lo tanto, si sabemos que el siguiente comando del sistema de control nos hace doblar o ir hacia atrás entonces podríamos inferir que estamos cerca de la pared.}
-    \only<7>{\alert{Término recursivo!}}
-    \note{Luego se pueden seguir haciendo asumciones, por ejemplo asumir que las probabilidades son gaussianas. Lo cual no es cierto en general.}
+    \only<2>{\alert{Bayes' Rule} \note{eta encodes the normalization performed by the divisor term of Bayes' rule.}}
+    \only<3>{\alert{Markov assumption. What I measure now $\observation_{t}$ depends only on the current state $\state_{t}$ and is independent of previous measurements $\observation_{1:t-1}$ and all commands $\controlCommand_{1:t}$}}
+    \only<4>{\alert{Law of total probability. That is, we integrate over all possible previous states. This can be interpreted as ``Where are we now, given the previous state $\state_{t-1}$ multiplied by how likely it is that said state $\state_{t-1}$ will be reached.''}}
+    \only<5>{\alert{Markov assumption. If $\state_{t-1}$ is given, then all measurements $\observation_{1:t-1}$ and commands $\controlCommand_{t-1}$ are irrelevant. We care about $\controlCommand_{t}$ because it tells us how it evolves from $\state_{t-1}$ to $\state_{t}$ }}
+    \only<6>{\alert{Independence assumption. We assume that a future command $\controlCommand_{t}$ does not help us know our current state $\state_{t}$.}} \note{We lose information since we assume independence. We assume that a future command does not help us know our current pose. This is not always true. For example, when a robot is very close to a wall, the control system would hardly give a command that makes the robot move towards the wall. Therefore, if we know that the next command from the control system makes us turn or go backward, then we could infer that we are close to the wall.}
+    \only<7>{\alert{Recursive term!}}
+    \note{Then we can continue to make assumptions, for example, assuming that the probabilities are Gaussian. Which is not true in general.}
 \end{frame}
 
-\begin{frame}{Paso de Predicción y Paso de Corrección}
-    \note{Información obtenida de Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
+\begin{frame}{Prediction Step and Correction Step}
+    \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
     \begin{itemize}
-        \item El Filtro de Bayes puede ser escrito como un proceso de dos pasos
-        \begin{equation*}
-        bel(\state_{t}) = \eta \, p\left(\observation_{t} |\state_{t} \right) \int p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right) bel(\state_{t-1}) d \state_{t-1}
-        \end{equation*}
-        \item Paso de Predicción
-        \begin{equation*}
-            \overline{bel}(\state_{t}) = \int p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right) bel(\state_{t-1}) d \state_{t-1}
-        \end{equation*}
-        \item Paso de Corrección
-        \begin{equation*}
-            bel(\state_{t}) = \eta \, p\left(\observation_{t} |\state_{t} \right) \overline{bel}(\state_{t})
-        \end{equation*}
-    \end{itemize}
-
-    \note{El paso de predicción: predice dónde vamos a estar dado los comandos de control}
-    \note{El paso de corrección: teniendo en cuenta las mediciones actuales corrije la pose predicha}
-    
-\end{frame}
-
-\begin{frame}{Motion model y observation model}
-    \note{Información obtenida de Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
-    \begin{itemize}
-         \item Paso de Predicción
-        \begin{equation*}
-            \overline{bel}(\state_{t}) = \int \underbrace{p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right)}_{\text{Motion model}} bel(\state_{t-1}) d \state_{t-1}
-        \end{equation*}
-        \item Paso de Corrección
-        \begin{equation*}
-            bel(\state_{t}) = \eta \underbrace{p\left(\observation_{t} |\state_{t} \right)}_{\text{\makebox[0pt]{Observation model (Measurement model o Sensor model)}}} \overline{bel}(\state_{t})
-        \end{equation*}
-    \end{itemize}
-    
-    \note{El paso de predicción: predice dónde vamos a estar dado los comandos de control}
-    \note{El paso de corrección: teniendo en cuenta las mediciones actuales corrije la pose predicha}
-    
-\end{frame}
-
-\begin{frame}{Diferentes implementaciones}
-    \note{Información obtenida de Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
-    \begin{itemize}
-        \item El Filtro de Bayes es un {\bf framework} estimación de estado recursiva
-        \item Hay diferentes implementaciones
-        \item Diferentes Propiedades:
-        \begin{itemize}
-            \item Modelos lineales vs no-lineales para el modelo de movimiento y observación
-            \item Utilización de distribuciones de probabilidad solamente Gausianas? 
-            \item Filtros paramétricos y no-paramétricos (representar la distribución de probabilidad de manera paramétrica o no-paramétrica)
-            \item ...
-        \end{itemize}
-    \end{itemize}
-    
-\end{frame}
-
-\begin{frame}{Filtros populares}
-    \note{Información obtenida de Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
-    \begin{itemize}
-        \item Kalman Filter
-        \begin{itemize}
-            \item Utiliza distribuciones de probabilidad Gaussianas
-            \item Solo funciona con modelo de movimiento y observación lineales
-        \end{itemize}
-        \item Extended Kalman Filter (EKF)
-        \begin{itemize}
-            \item Utiliza distribuciones de probabilidad Gaussianas
-            \item {\bf Lineariza} los modelos de movimiento y observación no lineales por medio de aproximación de Taylor
-        \end{itemize}
-        \item Particle filter
-        \begin{itemize}
-            \item No-paramétrico 
-            \item Modelos de distribuciones probabilísticas arbitrarias, es decir no todo es Gaussiano (etapa de sampleo de muestras)
-        \end{itemize}
-    \end{itemize}
-
-    \note{- Nonparametric filters represent posterior state as a function of previous state.
-    - Nonparametric filters does not rely on a fixed functional form of
-    posterior.
-    - Histogram filter and Particle filter represent state space and posterior as a finite set of data.
-    - There is usually a trade-off between efficiency and level of detail of data.}
-    \note{el precio a pagar es que tiene un costo computacional muy alto}
-\end{frame}
-
-\begin{frame}{Motion Model}
-    \note{Información obtenida de Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
+    \item The Bayes Filter can be written as a two-step process
     \begin{equation*}
-        \overline{bel}(\state_{t}) = \int \underbrace{p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right)}_{\text{Motion model}} bel(\state_{t-1}) d \state_{t-1}
+    bel(\state_{t}) = \eta \, p\left(\observation_{t} |\state_{t} \right) \int p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right) bel(\state_{t-1}) d \state_{t-1}
     \end{equation*}
+    \item Prediction Step
+    \begin{equation*}
+    \overline{bel}(\state_{t}) = \int p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right) bel(\state_{t-1}) d \state_{t-1}
+    \end{equation*}
+    \item Correction Step
+    \begin{equation*}
+    bel(\state_{t}) = \eta \, p\left(\observation_{t} |\state_{t} \right) \overline{bel}(\state_{t})
+    \end{equation*}
+    \end{itemize}
+    
+    \note{The prediction step: predicts where we will be given the control commands}
+    \note{The correction step: taking into account the current measurements, corrects the predicted pose}
+    
+\end{frame}
+    
+\begin{frame}{Motion model and observation model}
+    \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE} 
+    \begin{itemize}
+     \item Prediction Step
+     \begin{equation*}
+     \overline{bel}(\state_{t}) = \int \underbrace{p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right)}_{\text{Motion model}} bel(\state_{t-1}) d \state_{t-1}
+    \end{equation*}
+    \item Correction Step
+    \begin{equation*}
+    bel(\state_{t}) = \eta \underbrace{p\left(\observation_{t} |\state_{t} \right)}_{\text{\makebox[0pt]{Observation model (Measurement model or Sensor model)}}} \overline{bel}(\state_{t})
+    \end{equation*}
+    \end{itemize}
+    
+    \note{The prediction step: predicts where we will be given the control commands}
+    \note{The correction step: taking into account the current measurements, corrects the pose predicted}
+    
+\end{frame}
+    
+\begin{frame}{Different implementations}
+    \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
+    \begin{itemize}
+    \item The Bayes Filter is a recursive state estimation framework
+    \item There are different implementations
+    \item Different Properties:
+    \begin{itemize}
+    \item Linear vs. nonlinear models for motion and observation modeling
+    \item Using only Gaussian probability distributions?
+    \item Parametric and non-parametric filters (represent the probability distribution parametrically or non-parametrically)
+    \item ...
+    \end{itemize}
+    \end{itemize}
+    
+\end{frame}
+    
+\begin{frame}{Popular filters}
+    \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
+    \begin{itemize}
+    \item Kalman Filter
+    \begin{itemize}
+    \item Uses Gaussian probability distributions
+    \item Only works with linear motion and observation models
+    \end{itemize}
+    \item Extended Kalman Filter (EKF)
+    \begin{itemize}
+    \item Uses Gaussian probability distributions
+    \item {\bf Linearizes} nonlinear motion and observation models using a Taylor approximation
+    \end{itemize} 
+    \item Particle filter
+     \begin{itemize}
+     \item Non-parametric
+     \item Models of arbitrary probabilistic distributions, that is, not everything is Gaussian (sample sampling stage)
+     \end{itemize}
+     \end{itemize}
+    
+     \note{- Nonparametric filters represent posterior state as a function of previous state.
+     - Nonparametric filters does not rely on a fixed functional form of
+     later.
+     - Histogram filter and Particle filter represent state space and posterior as a finite set of data.
+     - There is usually a trade-off between efficiency and level of detail of data.}
+     \note{the price to pay is that it has a very high computational cost}
+    \end{frame}
+    
+    \begin{frame}{Motion Model}
+     \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
+     \begin{equation*}
+     \overline{bel}(\state_{t}) = \int \underbrace{p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right)}_{\text{Motion model}} bel(\state_{t-1}) d \state_{t-1}
+     \end{equation*}
 \end{frame}
 
-\begin{frame}{Ejemplo: Movimiento basado en odometría}
-    \note{Información obtenida de Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
+\begin{frame}{Example: Odometry-Based Motion}
+    \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
     
     \begin{figure}[!h]
-        \centering
-        \subfloat[Covarianza del motion model]
-        {
-            \includegraphics[width=0.6\columnwidth]{./images/covariance_odometry_motion_model.pdf}
-        }\\
-        \subfloat[Muestras del motion model]
-        {
-            \includegraphics[width=0.6\columnwidth]{./images/sampling_odometry_motion_model.pdf}
-        }
+    \centering
+    \subfloat[Motion Model Covariance]
+    {
+    \includegraphics[width=0.6\columnwidth]{./images/covariance_odometry_motion_model.pdf}
+    }\\
+    \subfloat[Motion Model Samples]
+    {
+    \includegraphics[width=0.6\columnwidth]{./images/sampling_odometry_motion_model.pdf}
+    }
     \end{figure}
     
+    \end{frame}
     
-\end{frame}
-
-\begin{frame}{Observation model}
-    \note{Información obtenida de Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
+    \begin{frame}{Observation Model}
+    \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
     \begin{equation*}
-        bel(\state_{t}) = \eta \underbrace{p\left(\observation_{t} |\state_{t} \right)}_{\text{\makebox[0pt]{Observation model (Measurement model o Sensor model)}}} \overline{bel}(\state_{t})
+    bel(\state_{t}) = \eta \underbrace{p\left(\observation_{t} |\state_{t} \right)}_{\text{\makebox[0pt]{Observation model (Measurement model or Sensor model)}}} \overline{bel}(\state_{t})
     \end{equation*}
-\end{frame}
-
-\begin{frame}{Ejemplo: Observation Model simple con Ruido Gaussiano}
-    \note{Información obtenida de Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
+    \end{frame}
+    
+    \begin{frame}{Example: Simple Observation Model with Gaussian Noise}
+    \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
     
     \begin{itemize}
-        \item Sensor de rango estimando la distancia a un objeto cercano
-        \item Ruido Gaussiano en la lectura del sensor
-    \end{itemize}
+    \item Range sensor estimating the distance to a nearby object
+    \item Gaussian noise in the sensor reading
+    \end{itemize} 
     
-       \begin{figure}[!h]
-           \includegraphics[width=0.6\columnwidth]{./images/simple_observation_model.pdf}
-    \end{figure}
-
+    \begin{figure}[!h]
+        \includegraphics[width=0.6\columnwidth]{./images/simple_observation_model.pdf}
+        \end{figure}
+    
 \end{frame}
