@@ -19,32 +19,32 @@
 \renewcommand*{\bibfont}{\footnotesize} % change bibliograhy size
 \bibliography{../../common/bibliography.bib}
 
-\subtitle{Localización}
-\title{Robótica Móvil}
+\subtitle{Localization}
+\title{Mobile Robotics}
 \author{Taihú Pire}
-\institute{Laboratorio de Robótica}
+\institute{Robotics Laboratory}
 \titlegraphic{\includegraphics[width=0.4\textwidth]{images/cifasis_logo.pdf}}
 \date{}
 
 
 \begin{document}
-	
-	% add title page
-	\frame{\titlepage}
-	
-	\section{Filtro de Bayes}
-	\input{src/localization.tex}
-	
-	\section{Filtro de Kalman Extendido (EKF)}
-	\input{src/ekf.tex}
 
-   	\section{Filtro de Partículas}
-    \input{src/particle_filter.tex}
-	
-	\section{Bibliografía}
-	\input{src/bibliography.tex}
-	
-	% Programming a robotic car seminar slides
-	%\input{src/programming_robotic_car_slides.tex}
-	
+ % add title page
+ \frame{\titlepage}
+
+ \section{Bayes filter}
+ \input{src/localization.tex}
+
+ \section{Extended Kalman Filter (EKF)}
+ \input{src/ekf.tex}
+
+ \section{Particle Filter}
+ \input{src/particle_filter.tex}
+
+ \section{Bibliography}
+ \input{src/bibliography.tex}
+
+ % Programming a robotic car seminar slides
+ %\input{src/programming_robotic_car_slides.tex}
+
 \end{document}
