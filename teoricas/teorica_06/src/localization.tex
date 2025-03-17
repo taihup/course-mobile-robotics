@@ -1,102 +1,108 @@
 \begin{frame}
-    \frametitle{Analysis for these slides}
+    \frametitle{Topics of these slides}
     
     \begin{itemize}
-    \item Bayes filter
-    \item Kalman filter
-    \item Particle filter
+        \item Bayes filter
+        \item Kalman filter
+        \item Particle filter
     \end{itemize}
     
-    \end{frame}
+\end{frame}
     
-    \begin{frame}{Localization}
+\begin{frame}
+    \frametitle{Localization}
     \begin{block}{Localization}
-    It is the ability of a machine (robot) to locate itself in space. \end{block}
-    \end{frame}
+        It is the ability of a machine (robot) to locate itself in space.
+    \end{block}
+\end{frame}
     
-    \begin{frame}
+\begin{frame}
     \frametitle{State Estimation}
     
     \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
     
     \begin{itemize}
-    \item Estimate the \textbf{state} $\state$ of a system given the \textbf{observations} $\observation$ and \textbf{control commands} $\controlCommand$
-    \item Objective:
+        \item Estimate the \textbf{state} $\state$ of a system given the \textbf{observations} $\observation$ and \textbf{control commands} $\controlCommand$
+        \item Objective:
     \end{itemize}
     
     \begin{equation}
-    p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right)
+        p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right)
     \end{equation}
     
     Recursive State Estimation: This involves estimating the current state $\state_{t}$ using the immediately preceding state $\state_{t-1}$ as well. \end{frame}
     
     \begin{frame}{Recursive Bayes Filter}
     \begin{block}{Example}
-    \begin{itemize}
-    
-    \item Given a robot in a one-dimensional world, with no knowledge of where it is
-    \item The robot can move forward or backward
-    \item Suppose further that there are three doors (\alert{landmarks}), the robot can detect whether it is next to a door or not.
-    \end{itemize}
+        \begin{itemize}
+            \item Given a robot in a one-dimensional world, with no knowledge of where it is
+            \item The robot can move forward or backward
+            \item Suppose further that there are three doors (\alert{landmarks}), the robot can detect whether it is next to a door or not.
+        \end{itemize}
     \end{block}
     
     \begin{center}
-    \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_example.pdf}
+        \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_example.pdf}
     \end{center}
     
-    \end{frame}
+\end{frame}
     
-    \begin{frame}{Recursive Bayes Filter: Initial Position}
+\begin{frame}
+    \frametitle{Recursive Bayes Filter: Initial Position}
     Since the robot initially does not know its position, it is equally possible that it is located anywhere in the world (\alert{belief}). We can represent this mathematically by saying that the robot's \alert{probability distribution function} is \alert{uniform} over the world it is in.
     \begin{center}
-    \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_uniform.pdf}
+        \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_uniform.pdf}
     \end{center}
     
-    \end{frame}
+\end{frame}
     
-    \begin{frame}{Recursive Bayes Filter: Measurement}
+\begin{frame}
+    \frametitle{Recursive Bayes Filter: Measurement}
     
     If the robot senses that it is next to a door, then its belief about its location is altered as follows:
     
     \begin{center}
-    \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_sensing.pdf}
+        \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_sensing.pdf}
     \end{center}
     
     This new function represents another probability distribution called \alert{Posterior belief}.
     
-    The Posterior belief function is the best representation of the robot's position currently. Each hill represents the evaluation of its position relative to a door.
+    The Posterior belief function is the best representation of the robot's current position. Each hill represents the evaluation of its position relative to a door.
     
     The probability $p(\measurement | \state)$ reads: ``Given that we know where the robot is, what is the probability of observing the door?''
     
-    \end{frame}
+\end{frame}
     
-    \begin{frame}{Recursive Bayes Filter: Movement}
+\begin{frame}
+    \frametitle{Recursive Bayes Filter: Movement}
     
     If \textbf{the robot moves to the right}, the belief changes according to the movement.
     
     Just as the robot's movement is inaccurate, its uncertainty increases as it moves; in other words, the hills are flattened. This flattening is mathematically carried out through the \alert{convolution} operation between the Posterior belief function and the function that describes the distance traveled.
     
     \begin{center}
-    \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_moving.pdf}
+        \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_moving.pdf}
     \end{center}
     
     The convolution operation measures the overlap as one function slides over another.
     
-    \end{frame}
+\end{frame}
     
-    \begin{frame}{Recursive Bayes Filter: Second Measurement}
+\begin{frame}
+    \frametitle{Recursive Bayes Filter: Second Measurement}
     Suppose the robot, after moving, senses that it is next to a door again. Then, as before, the probability where there is a door will increase by a certain factor of the probability function.
     
     \begin{center}
-    \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_sensing2.pdf}
+        \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_sensing2.pdf}
     \end{center}
-    \end{frame}
+\end{frame}
     
-    \begin{frame}{Recursive Bayes Filter: Second Movement}
+\begin{frame}
+    \frametitle{Recursive Bayes Filter: Second Movement}
     Suppose the robot moves again...
     
     \begin{center}
-    \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_moving2.pdf}
+        \includegraphics<1>[width=0.7\columnwidth]{./images/monte_carlo_moving2.pdf}
     \end{center}
 \end{frame}
 
@@ -107,18 +113,18 @@
     \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
     
     \begin{itemize}
-    \item Estimate the state $\state$ of a system given the observations $\observation$ and control commands $\controlCommand$
+        \item Estimate the state $\state$ of a system given the observations $\observation$ and control commands $\controlCommand$
     \item Objective:
     \end{itemize}
     
     \begin{equation}
-    p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right)
+        p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right)
     \end{equation}
     
     Recursive state estimation: This involves estimating the current state $\state_{t}$ using the immediately preceding state $\state_{t-1}$ as well.
-    \end{frame}
+\end{frame}
     
-    \begin{frame}
+\begin{frame}
     \frametitle{State Estimation}
     
     \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
@@ -134,7 +140,7 @@
     
     Now let's simplify the distribution using Bayes' Rule:
     
-    \end{frame}
+\end{frame}
 
 
 \begin{frame}
@@ -147,29 +153,29 @@
                 }
         \only<2>{
             bel(\state_{t}) &= \alert{p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right)}\\
-                            &= \eta \, p\left(\observation_{t} |\state_{t}, \observation_{1:t-1}, \controlCommand_{1:t} \right) p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right) \quad \text{donde $\eta$ es una constante de normalización}\\
+                            &= \eta \, p\left(\observation_{t} |\state_{t}, \observation_{1:t-1}, \controlCommand_{1:t} \right) p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right) \quad \text{where $\eta$ is a normalization constant}\\
                 }
         \only<3>{
             bel(\state_{t}) &= p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right)\\
-                            &= \eta \, \alert{p\left(\observation_{t} |\state_{t}, \observation_{1:t-1}, \controlCommand_{1:t} \right)} p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right) \quad \text{donde $\eta$ es una constante de normalización}\\
+                            &= \eta \, \alert{p\left(\observation_{t} |\state_{t}, \observation_{1:t-1}, \controlCommand_{1:t} \right)} p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right) \quad \text{where $\eta$ is a normalization constant}\\
                             &= \eta \, p\left(\observation_{t} |\state_{t} \right) p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right)\\
                 }
         \only<4>{
             bel(\state_{t}) &= p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right)\\
-                            &= \eta \, p\left(\observation_{t} |\state_{t}, \observation_{1:t-1}, \controlCommand_{1:t} \right) p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right) \quad \text{donde $\eta$ es una constante de normalización}\\
+                            &= \eta \, p\left(\observation_{t} |\state_{t}, \observation_{1:t-1}, \controlCommand_{1:t} \right) p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right) \quad \text{where $\eta$ is a normalization constant}\\
                             &= \eta \, p\left(\observation_{t} |\state_{t} \right) \alert{p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right)}\\
                             &= \eta \, p\left(\observation_{t} |\state_{t} \right) \int p\left(\state_{t} | \state_{t-1}, \observation_{1:t-1}, \controlCommand_{1:t} \right) p\left(\state_{t-1} | \observation_{1:t-1}, \controlCommand_{1:t} \right) d \state_{t-1}\\
                 }
         \only<5>{
             bel(\state_{t}) &= p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right)\\
-                            &= \eta \, p\left(\observation_{t} |\state_{t}, \observation_{1:t-1}, \controlCommand_{1:t} \right) p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right) \quad \text{donde $\eta$ es una constante de normalización}\\
+                            &= \eta \, p\left(\observation_{t} |\state_{t}, \observation_{1:t-1}, \controlCommand_{1:t} \right) p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right) \quad \text{where $\eta$ is a normalization constant}\\
                             &= \eta \, p\left(\observation_{t} |\state_{t} \right) p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right)\\
                             &= \eta \, p\left(\observation_{t} |\state_{t} \right) \int \alert{p\left(\state_{t} | \state_{t-1}, \observation_{1:t-1}, \controlCommand_{1:t} \right)} p\left(\state_{t-1} | \observation_{1:t-1}, \controlCommand_{1:t} \right) d \state_{t-1}\\
                             &= \eta \, p\left(\observation_{t} |\state_{t} \right) \int p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right) p\left(\state_{t-1} | \observation_{1:t-1}, \controlCommand_{1:t} \right) d \state_{t-1}\\
                 }
         \only<6>{
             bel(\state_{t}) &= p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right)\\
-                            &= \eta \, p\left(\observation_{t} |\state_{t}, \observation_{1:t-1}, \controlCommand_{1:t} \right) p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right) \quad \text{donde $\eta$ es una constante de normalización}\\
+                            &= \eta \, p\left(\observation_{t} |\state_{t}, \observation_{1:t-1}, \controlCommand_{1:t} \right) p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right) \quad \text{where $\eta$ is a normalization constant}\\
                             &= \eta \, p\left(\observation_{t} |\state_{t} \right) p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right)\\
                             &= \eta \, p\left(\observation_{t} |\state_{t} \right) \int p\left(\state_{t} | \state_{t-1}, \observation_{1:t-1}, \controlCommand_{1:t} \right) p\left(\state_{t-1} | \observation_{1:t-1}, \controlCommand_{1:t} \right) d \state_{t-1}\\
                             &= \eta \, p\left(\observation_{t} |\state_{t} \right) \int p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right) p\left(\state_{t-1} | \observation_{1:t-1}, \alert{\controlCommand_{1:t}} \right) d \state_{t-1}\\
@@ -177,7 +183,7 @@
                 }
         \only<7>{
             bel(\state_{t}) &= p\left(\state_{t} | \observation_{1:t}, \controlCommand_{1:t} \right)\\
-                            &= \eta \, p\left(\observation_{t} |\state_{t}, \observation_{1:t-1}, \controlCommand_{1:t} \right) p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right) \quad \text{donde $\eta$ es una constante de normalización}\\
+                            &= \eta \, p\left(\observation_{t} |\state_{t}, \observation_{1:t-1}, \controlCommand_{1:t} \right) p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right) \quad \text{where $\eta$ is a normalization constant}\\
                             &= \eta \, p\left(\observation_{t} |\state_{t} \right) p\left(\state_{t} | \observation_{1:t-1}, \controlCommand_{1:t} \right)\\
                             &= \eta \, p\left(\observation_{t} |\state_{t} \right) \int p\left(\state_{t} | \state_{t-1}, \observation_{1:t-1}, \controlCommand_{1:t} \right) p\left(\state_{t-1} | \observation_{1:t-1}, \controlCommand_{1:t} \right) d \state_{t-1}\\
                             &= \eta \, p\left(\observation_{t} |\state_{t} \right) \int p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right) p\left(\state_{t-1} | \observation_{1:t-1}, \controlCommand_{1:t} \right) d \state_{t-1}\\
