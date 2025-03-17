@@ -1,108 +1,104 @@
 \begin{frame}
-    \frametitle{Filtro de Partículas (Particle Filter)}
-    \note{Información extraída de Vídeo de Cyrill Stachniss https://youtu.be/MsYlueVDLI0}
+    \frametitle{Particle Filter}
+    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
     \footnotesize
     \begin{itemize}
-        \item Con EKF estamos restringidos a distribuciones Gaussianas.
-        \item Cuando usamos EKF obtenemos una Distibuión Gaussiana que describe dónde se encuentra el robot.
-        \item En Particle Filter utilizamos partículas o hipótesis que describen dónde podría estar el robot.
-        \item En vez de tener una forma paramétrica como es EKF, que describimos la distribución de probabilidad con los parámetros media $\mu$ y covarianza $\covariance$. Partible Filter utiliza muestras no-paramétricas como hipótesis sobre dónde el robot podría estar.
+    \item With EKF, we are restricted to Gaussian distributions.
+    \item When we use EKF, we obtain a Gaussian distribution that describes where the robot is located.
+    \item In Particle Filter, we use particles or hypotheses that describe where the robot could be.
+    \item Instead of having a parametric form like EKF, which describes the probability distribution with the parameters mean $\mu$ and covariance $\covariance$, Partible Filter uses non-parametric samples as hypotheses about where the robot could be.
+    
     \end{itemize}
     
-    
-   	\begin{center}
-        \movie[loop]{\includegraphics[width=0.4\columnwidth]{images/particle_filter/particle_filter_video.jpg}}{videos/particle_filter.mp4}
+    \begin{center}
+    \movie[loop]{\includegraphics[width=0.4\columnwidth]{images/particle_filter/particle_filter_video.jpg}}{videos/particle_filter.mp4}
     \end{center}
     
-    \note{Vídeo extraído de https://rse-lab.cs.washington.edu/projects/mcl/animations/global-floor.gif}
+    \note{Video taken from https://rse-lab.cs.washington.edu/projects/mcl/animations/global-floor.gif}
     
-\end{frame}
-
-\begin{frame}
-    \frametitle{Aproximación de una Función}
-    \note{Información extraída de Vídeo de Cyrill Stachniss https://youtu.be/MsYlueVDLI0}
+    \end{frame}
+    
+    \begin{frame}
+    \frametitle{Approximation of a Function}
+    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
     \footnotesize
     
     \begin{itemize}
-        \item Objetivo: Poder estimar cualquier \textbf{distribución de probabilidad arbitraria}.
+    \item Objective: To be able to estimate any \textbf{arbitrary probability distribution}.
     \end{itemize}
     
     \begin{center}
     \includegraphics[width=0.5\columnwidth]{./images/particle_filter/arbitrary_distribution.pdf}
     \end{center}
     
-\end{frame}
-
-\begin{frame}
-    \frametitle{Utilizando Muestras (Partículas)}
-    \note{Información extraída de Vídeo de Cyrill Stachniss https://youtu.be/MsYlueVDLI0}
+    \end{frame}
+    
+    \begin{frame}
+    \frametitle{Using Samples (Particles)}
+    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
     \footnotesize
     \begin{itemize}
-        \item \textbf{Múltiples muestras} para representar una distribución de probabilidad arbitraría
-        \item Las muestras son están más agrupadas en algunas áreas en otras menos. La cantidad de partículas por unidad de área describe que tan probable es que el robot se encuentre en esa área.
-        \item Cada muestra está acumulando un poco de ``masa de probabilidad''.
-        \item Las muestra puede ser vista como una aproximación a la función de densidad de probabilidad (pdf).
-        \item Para obtener la pdf, hay que integrar sobre una cierta área de manera de obtener la probabilidad matemática de que el robot se encuentre en dicha área.
+    \item \textbf{Multiple samples} to represent an arbitrary probability distribution
+    \item Samples are more clustered in some areas and less so in others. The number of particles per unit area describes how likely it is that the robot is in that area.
+    \item Each sample accumulates a bit of "probability mass."
+    \item Samples can be viewed as an approximation to the probability density function (pdf).
+    \item To obtain the PDF, you must integrate over a certain area to obtain the mathematical probability that the robot is in that area.
     \end{itemize}
     
     \begin{center}
     \includegraphics[width=0.5\columnwidth]{./images/particle_filter/arbitrary_distribution_samples.pdf}
     \end{center}
     
-\end{frame}
-
-\begin{frame}
-    \frametitle{Utilizando Muestras con Peso}
-    \note{Información extraída de Vídeo de Cyrill Stachniss https://youtu.be/MsYlueVDLI0}
+    \end{frame}
+    
+    \begin{frame}
+    \frametitle{Using Weighted Samples}
+    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
     \footnotesize
     \begin{itemize}
-        \item \textbf{Múltiples muestras con peso} para representar una distribución de probabilidad arbitraría
-        \item Es posible reducir el número de muestras que necesitamos, si le agregamos pesos a cada muestra
-        \item Mientras más peso tiene una muestra, más masa de probabilidad hay en esa región
-        \item Los pesos de todas las partículas juntas deben sumar 1
-        \item Al inicio, podríamos agregarle a cada muestra un peso uniforme. Por ejemplo, si tenemos $n$ muestras, entonces cada muestra tiene peso $\frac{1}{n}$
+    \item \textbf{Multiple Weighted Samples} to Represent an Arbitrary Probability Distribution
+    \item We can reduce the number of samples we need by adding weights to each sample.
+    \item The more weight a sample has, the more probability mass there is in that region.
+    \item The weights of all the particles together must sum to 1.
+    \item Initially, we could add a uniform weight to each sample. For example, if we have $n$ samples, then each sample has weight $\frac{1}{n}$
     \end{itemize}
     
     \begin{center}
-        \includegraphics[width=0.5\columnwidth]{./images/particle_filter/arbitrary_distribution_weighted_samples.pdf}
+    \includegraphics[width=0.5\columnwidth]{./images/particle_filter/arbitrary_distribution_weighted_samples.pdf}
     \end{center}
     
-\end{frame}
-
-\begin{frame}
-    \frametitle{Filtro de Partículas (Particle Filter)}
-    \note{Información extraída de Vídeo de Cyrill Stachniss https://youtu.be/MsYlueVDLI0}
+    \end{frame}
+    
+    \begin{frame}
+    \frametitle{Particle Filter}
+    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
     
     \footnotesize
     \begin{itemize}
-        \item Notar que es una aproximación de la pdf
-        \item Es importante tener un número de muestras suficientes para poder representar la fdp adecuadamente.
+    \item Note that this is an approximation of the pdf.
+    \item It is important to have a sufficient number of samples to adequately represent the pdf.
     \end{itemize}
     
     
+    \end{frame}
+    
+    
+    \begin{frame}
+     \frametitle{Material for Particle Filter}
+    
+     \begin{itemize}
+     \item Information extracted from Video by Cyrill Stachniss https://youtu.be/MsYlueVDLI0
+     \item https://rse-lab.cs.washington.edu/projects/mcl/
+     \end{itemize}
+    
+    \end{frame}
+    
+    
+    \begin{frame}
+     \frametitle{TODO}
+     \note{Information taken from Cyrill Stachniss Video https://youtu.be/MsYlueVDLI0}
+     \note{https://rse-lab.cs.washington.edu/projects/mcl/}
+    
+     \TODO{USE THE SEMINAR SLIDE}
+    
 \end{frame}
-
-
-\begin{frame}
-    \frametitle{Material para Particle Filter}
-    
-    \begin{itemize}
-        \item Información extraída de Vídeo de Cyrill Stachniss https://youtu.be/MsYlueVDLI0
-        \item https://rse-lab.cs.washington.edu/projects/mcl/
-    \end{itemize}
-   
-\end{frame}
-
-
-\begin{frame}
-    \frametitle{TODO}
-    \note{Información extraída de Vídeo de Cyrill Stachniss https://youtu.be/MsYlueVDLI0}
-    \note{https://rse-lab.cs.washington.edu/projects/mcl/}
-    
-    \TODO{UTILIZAR LAS SLIDES DEL SEMINARIO}
-    
-    
-\end{frame}
-
-
-    
