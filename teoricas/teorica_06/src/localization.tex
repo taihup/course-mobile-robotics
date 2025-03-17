@@ -200,21 +200,22 @@
     \note{Then we can continue to make assumptions, for example, assuming that the probabilities are Gaussian. Which is not true in general.}
 \end{frame}
 
-\begin{frame}{Prediction Step and Correction Step}
+\begin{frame}
+    \frametitle{Prediction Step and Correction Step}
     \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
     \begin{itemize}
-    \item The Bayes Filter can be written as a two-step process
-    \begin{equation*}
-    bel(\state_{t}) = \eta \, p\left(\observation_{t} |\state_{t} \right) \int p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right) bel(\state_{t-1}) d \state_{t-1}
-    \end{equation*}
-    \item Prediction Step
-    \begin{equation*}
-    \overline{bel}(\state_{t}) = \int p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right) bel(\state_{t-1}) d \state_{t-1}
-    \end{equation*}
-    \item Correction Step
-    \begin{equation*}
-    bel(\state_{t}) = \eta \, p\left(\observation_{t} |\state_{t} \right) \overline{bel}(\state_{t})
-    \end{equation*}
+        \item The Bayes Filter can be written as a two-step process
+        \begin{equation*}
+        bel(\state_{t}) = \eta \, p\left(\observation_{t} |\state_{t} \right) \int p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right) bel(\state_{t-1}) d \state_{t-1}
+        \end{equation*}
+        \item Prediction Step
+        \begin{equation*}
+        \overline{bel}(\state_{t}) = \int p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right) bel(\state_{t-1}) d \state_{t-1}
+        \end{equation*}
+        \item Correction Step
+        \begin{equation*}
+        bel(\state_{t}) = \eta \, p\left(\observation_{t} |\state_{t} \right) \overline{bel}(\state_{t})
+        \end{equation*}
     \end{itemize}
     
     \note{The prediction step: predicts where we will be given the control commands}
@@ -222,17 +223,18 @@
     
 \end{frame}
     
-\begin{frame}{Motion model and observation model}
+\begin{frame}
+    \frametitle{Motion model and observation model}
     \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE} 
     \begin{itemize}
-     \item Prediction Step
-     \begin{equation*}
-     \overline{bel}(\state_{t}) = \int \underbrace{p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right)}_{\text{Motion model}} bel(\state_{t-1}) d \state_{t-1}
-    \end{equation*}
-    \item Correction Step
-    \begin{equation*}
-    bel(\state_{t}) = \eta \underbrace{p\left(\observation_{t} |\state_{t} \right)}_{\text{\makebox[0pt]{Observation model (Measurement model or Sensor model)}}} \overline{bel}(\state_{t})
-    \end{equation*}
+        \item Prediction Step
+        \begin{equation*}
+        \overline{bel}(\state_{t}) = \int \underbrace{p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right)}_{\text{Motion model}} bel(\state_{t-1}) d \state_{t-1}
+        \end{equation*}
+        \item Correction Step
+        \begin{equation*}
+        bel(\state_{t}) = \eta \underbrace{p\left(\observation_{t} |\state_{t} \right)}_{\text{\makebox[0pt]{Observation model (Measurement model or Sensor model)}}} \overline{bel}(\state_{t})
+        \end{equation*}
     \end{itemize}
     
     \note{The prediction step: predicts where we will be given the control commands}
@@ -240,20 +242,20 @@
     
 \end{frame}
     
-\begin{frame}{Different implementations}
+\begin{frame}
+    \frametitle{Different implementations}
     \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
     \begin{itemize}
-    \item The Bayes Filter is a recursive state estimation framework
-    \item There are different implementations
-    \item Different Properties:
-    \begin{itemize}
-    \item Linear vs. nonlinear models for motion and observation modeling
-    \item Using only Gaussian probability distributions?
-    \item Parametric and non-parametric filters (represent the probability distribution parametrically or non-parametrically)
-    \item ...
+        \item The Bayes Filter is a recursive state estimation framework
+        \item There are different implementations
+        \item Different Properties:
+        \begin{itemize}
+            \item Linear vs. nonlinear models for motion and observation modeling
+            \item Using only Gaussian probability distributions?
+            \item Parametric and non-parametric filters (represent the probability distribution parametrically or non-parametrically)
+            \item ...
+        \end{itemize}
     \end{itemize}
-    \end{itemize}
-    
 \end{frame}
     
 \begin{frame}{Popular filters}
@@ -308,23 +310,23 @@
     
     \end{frame}
     
-    \begin{frame}{Observation Model}
+\begin{frame}
+    \frametitle{Observation Model}
     \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
     \begin{equation*}
     bel(\state_{t}) = \eta \underbrace{p\left(\observation_{t} |\state_{t} \right)}_{\text{\makebox[0pt]{Observation model (Measurement model or Sensor model)}}} \overline{bel}(\state_{t})
     \end{equation*}
-    \end{frame}
+\end{frame}
     
-    \begin{frame}{Example: Simple Observation Model with Gaussian Noise}
+\begin{frame}{Example: Simple Observation Model with Gaussian Noise}
     \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
     
     \begin{itemize}
-    \item Range sensor estimating the distance to a nearby object
-    \item Gaussian noise in the sensor reading
+        \item Range sensor estimating the distance to a nearby object
+        \item Gaussian noise in the sensor reading
     \end{itemize} 
     
     \begin{figure}[!h]
         \includegraphics[width=0.6\columnwidth]{./images/simple_observation_model.pdf}
-        \end{figure}
-    
+    \end{figure}    
 \end{frame}
