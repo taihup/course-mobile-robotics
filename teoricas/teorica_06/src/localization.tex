@@ -258,24 +258,25 @@
     \end{itemize}
 \end{frame}
     
-\begin{frame}{Popular filters}
+\begin{frame}
+    \frametitle{Popular filters}
     \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
     \begin{itemize}
-    \item Kalman Filter
-    \begin{itemize}
-    \item Uses Gaussian probability distributions
-    \item Only works with linear motion and observation models
-    \end{itemize}
-    \item Extended Kalman Filter (EKF)
-    \begin{itemize}
-    \item Uses Gaussian probability distributions
-    \item {\bf Linearizes} nonlinear motion and observation models using a Taylor approximation
-    \end{itemize} 
-    \item Particle filter
-     \begin{itemize}
-     \item Non-parametric
-     \item Models of arbitrary probabilistic distributions, that is, not everything is Gaussian (sample sampling stage)
-     \end{itemize}
+        \item Kalman Filter
+        \begin{itemize}
+            \item Uses Gaussian probability distributions
+            \item Only works with linear motion and observation models
+        \end{itemize}
+        \item Extended Kalman Filter (EKF)
+        \begin{itemize}
+            \item Uses Gaussian probability distributions
+            \item {\bf Linearizes} nonlinear motion and observation models using a Taylor approximation
+        \end{itemize} 
+        \item Particle filter
+        \begin{itemize}
+            \item Non-parametric
+            \item Models of arbitrary probabilistic distributions, that is, not everything is Gaussian (sample sampling stage)
+        \end{itemize}
      \end{itemize}
     
      \note{- Nonparametric filters represent posterior state as a function of previous state.
@@ -284,31 +285,32 @@
      - Histogram filter and Particle filter represent state space and posterior as a finite set of data.
      - There is usually a trade-off between efficiency and level of detail of data.}
      \note{the price to pay is that it has a very high computational cost}
-    \end{frame}
+\end{frame}
     
-    \begin{frame}{Motion Model}
-     \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
-     \begin{equation*}
-     \overline{bel}(\state_{t}) = \int \underbrace{p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right)}_{\text{Motion model}} bel(\state_{t-1}) d \state_{t-1}
-     \end{equation*}
+\begin{frame}{Motion Model}
+    \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
+    \begin{equation*}
+    \overline{bel}(\state_{t}) = \int \underbrace{p\left(\state_{t} | \state_{t-1}, \controlCommand_{t} \right)}_{\text{Motion model}} bel(\state_{t-1}) d \state_{t-1}
+    \end{equation*}
 \end{frame}
 
-\begin{frame}{Example: Odometry-Based Motion}
+\begin{frame}
+    \frametitle{Example: Odometry-Based Motion}
     \note{Information obtained from Cyrill Stachniss Bayes: https://youtu.be/0lKHFJpaZvE}
     
     \begin{figure}[!h]
-    \centering
-    \subfloat[Motion Model Covariance]
-    {
-    \includegraphics[width=0.6\columnwidth]{./images/covariance_odometry_motion_model.pdf}
-    }\\
-    \subfloat[Motion Model Samples]
-    {
-    \includegraphics[width=0.6\columnwidth]{./images/sampling_odometry_motion_model.pdf}
-    }
+        \centering
+        \subfloat[Motion Model Covariance]
+        {
+        \includegraphics[width=0.6\columnwidth]{./images/covariance_odometry_motion_model.pdf}
+        }\\
+        \subfloat[Motion Model Samples]
+        {
+        \includegraphics[width=0.6\columnwidth]{./images/sampling_odometry_motion_model.pdf}
+        }
     \end{figure}
     
-    \end{frame}
+\end{frame}
     
 \begin{frame}
     \frametitle{Observation Model}
