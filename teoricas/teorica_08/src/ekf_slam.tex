@@ -1,19 +1,18 @@
-
 \begin{frame}
-    \frametitle{Definición del Problema de SLAM}
-    \note{Información extraída de https://www.youtube.com/watch?v=X30sEgIws0g}
-    \note{Información extraída de https://www.ipb.uni-bonn.de/html/teaching/photo12-2021/2021-pho2-16-ekf-slam.pptx.pdf}
+    \frametitle{SLAM Problem Definition}
+    \note{Information extracted from https://www.youtube.com/watch?v=X30sEgIws0g}
+    \note{Information extracted from https://www.ipb.uni-bonn.de/html/teaching/photo12-2021/2021-pho2-16-ekf-slam.pptx.pdf}
 
-    Dado:
+    Given:
     \begin{itemize}
-        \item Comandos de control enviados $u_{1:T} = \{u_1, u_2, \ldots, u_T\}$
-        \item Observaciones $z_{1:T} = \{z_1, z_2, \ldots, z_T\}$
+        \item Control commands sent $u_{1:T} = \{u_1, u_2, \ldots, u_T\}$
+        \item Observations $z_{1:T} = \{z_1, z_2, \ldots, z_T\}$
     \end{itemize}
 
-    Se busca:
+    Find:
     \begin{itemize}
-        \item Mapa del entorno $m$
-        \item Trayectoria (o pose actual) del vehículo $x_{0:T} = \{x_0, x_1, \ldots, x_T\}$ $x_{t}$
+        \item Environment map $m$
+        \item Vehicle trajectory (or current pose) $x_{0:T} = \{x_0, x_1, \ldots, x_T\}$ $x_{t}$
     \end{itemize}
 \end{frame}
 
