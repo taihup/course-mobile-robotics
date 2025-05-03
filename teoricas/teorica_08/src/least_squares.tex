@@ -1,81 +1,64 @@
 \begin{frame}
-    \frametitle{Material para Least Squares}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Least Squares in General}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
-    \TODO{Terminar slides de Least Squares}
-    
-    \begin{itemize}
-        \item Cyrill Stachniss - Least Squares - An informal Introduction \url{https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
-    \end{itemize}
-\end{frame}
-
-
-\begin{frame}
-    \frametitle{Least Squares en General}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
-    
-    Enfoque para calcular una solución para un sistema sobredeterminado
+    Approach to compute a solution for an overdetermined system
 
     \begin{itemize}
-        \item Más ecuaciones que incógnitas
-        \item Minimiza la suma de cuadrados de los errores en las ecuaciones
-        \item Enfoque estándar para un gran conjunto de problemas
-        \item Se utiliza para estimar el modelo de parámetros dado un conjunto de observaciones
+        \item More equations than unknowns
+        \item Minimizes the sum of squared errors in the equations
+        \item Standard approach for a wide range of problems
+        \item Used to estimate the parameter model given a set of observations
     \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Nuestro Problema}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Our Problem}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
-    Dado un sistema descripto por un conjunto de $n$ funciones de observación $\left\{f_{i}\left(\state\right)\right\}_{i=1:n}$
+    Given a system described by a set of $n$ observation functions $\left\{f_{i}\left(\state\right)\right\}_{i=1:n}$
 
     \begin{itemize}
-        \item $\stateBold$ es el vector de estado
-        \item $\observationBold$ es una una medición del estado $\stateBold$
-        \item $\prediction_{i} = f_{i}\left(\stateBold\right)$ es una función que mapea el estado $\stateBold$ a una medición predicha $\prediction_{i}$
-        \item Dadas $n$ mediciones ruidosas $\observationBold_{1:n}$ acerca del estado $\stateBold$
-        \item Objetivo: Estimar el estado $\stateBold$ que mejor explica las mediciones $\observationBold_{1:n}$
+        \item $\stateBold$ is the state vector
+        \item $\observationBold$ is a measurement of the state $\stateBold$
+        \item $\prediction_{i} = f_{i}\left(\stateBold\right)$ is a function that maps the state $\stateBold$ to a predicted measurement $\prediction_{i}$
+        \item Given $n$ noisy measurements $\observationBold_{1:n}$ about the state $\stateBold$
+        \item Objective: Estimate the state $\stateBold$ that best explains the measurements $\observationBold_{1:n}$
     \end{itemize}
-\end{frame}
 
-\begin{frame}
-    \frametitle{Explicación Gráfica}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
-    
     \begin{center}
-        \includegraphics[width=0.7\textwidth]{images/least_squares.pdf}
+        \includegraphics[width=0.5\textwidth]{images/least_squares.pdf}
     \end{center}
 
 \end{frame}
 
 \begin{frame}
-    \frametitle{Ejemplo}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Example}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{center}
         \includegraphics[width=0.7\textwidth]{images/least_squares.pdf}
     \end{center}
     
     \begin{itemize}
-        \item $\stateBold$ posición de los puntos 3D
-        \item $\observationBold_{i}$ coordenadas de los puntos 3D proyectados en las imágenes
-        \item Estimar la posición 3D más probable de los puntos basado en las proyecciones en las imágenes (dada las poses de la cámara)
+        \item $\stateBold$: 3D position of the points
+        \item $\observationBold_{i}$: Coordinates of the 3D points projected onto the images
+        \item Estimate the most likely 3D position of the points based on their projections in the images (given the camera poses)
     \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Función de Error}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Error Function}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item El error $\error_{i}$ suele ser la diferencia entre la medición real y la predicción:
+        \item The error $\error_{i}$ is typically the difference between the actual measurement and the prediction:
             \begin{equation*}
                 \error_{i}\left( \stateBold \right) = \observationBold_{i} - f_{i}\left( \stateBold \right)
             \end{equation*}
-        \item Supongamos que el error tiene una distribución normal con media cero
-        \item Error Gaussiano con matriz de información $\informationMatrix_{i}$
-        \item El error al cuadrado de una medición depende sólo del estado y es un escalar:
+        \item Assume the error follows a normal distribution with zero mean and covariance matrix $\covarianceBold_{i}$
+        \item The Gaussian error information matrix is $\informationMatrix_{i} = \inverse{\covarianceBold_{i}}$
+        \item The squared error of a measurement depends only on the state and is a scalar:
             \begin{equation*}
                 \error_{i}\left( \stateBold \right) = \error_{i}\left( \stateBold \right)^{\top} \informationMatrix_{i} \error_{i}\left( \stateBold \right)
             \end{equation*}
@@ -83,11 +66,11 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Objetivo: Encontrar el Mínimo}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Objective: Find the Minimum}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Encontrar el estado $\stateBold^{*}$ que minimiza el error dados todas las mediciones
+        \item Find the state $\stateBold^{*}$ that minimizes the error given all measurements
         
         \begin{center}
             \includegraphics[width=0.7\textwidth]{images/find_minimum.pdf}
@@ -97,68 +80,68 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Objetivo: Encontrar el Mínimo}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Objective: Find the Minimum}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Encontrar el estado $\stateBold^{*}$ que minimiza el error dados todas las mediciones
+        \item Find the state $\stateBold^{*}$ that minimizes the error given all measurements
         
         \begin{equation*}
             \stateBold^{*} = \argmin_{\stateBold} \sum_{i} \error_{i}\left( \stateBold \right)^{\top} \informationMatrix_{i} \error_{i}\left( \stateBold \right)
         \end{equation*}
         
         
-        \item Una solución general es derivar la función de error global y encontrar sus nulos
-        \item En general compleja y con solución no cerrada $\rightarrow$ Solución con Métodos numéricos
+        \item A general solution is to derive the global error function and find its zeros
+        \item Often complex with no closed-form solution $\rightarrow$ Numerical methods
     \end{itemize}
     
 \end{frame}
 
 
 \begin{frame}
-    \frametitle{Suposiciones}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Assumptions}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     \begin{itemize}
-        \item Hay una ``buena'' solución inicial disponible
-        \item Las funciones de error son ``suaves'' en la vecindad del mínimo (con suerte global)
-        \item Entonces, podemos resolver el problema con linearizaciones locales iterativas
+        \item A "good" initial solution is available
+        \item The error functions are "smooth" near the minimum (ideally global)
+        \item Thus, we can solve the problem using iterative local linearizations
     \end{itemize}
 
 \end{frame}
 
 \begin{frame}
-    \frametitle{Resolvemos utilizando Linearizaciones locales iterativas}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Solve Using Iterative Local Linearizations}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     \begin{itemize}
-        \item Linealizar los términos de error alrededor del solución actual/solución inicial
-        \item Calcular la primera derivada de la función de error al cuadrado
-        \item Setear en cero y resolver el sistema lineal
-        \item Obtener el nuevo estado (que con suerte estará más cerca del mínimo)
-        \item Iterar
+        \item Linearize the error terms around the current/initial solution
+        \item Compute the first derivative of the squared error function
+        \item Set to zero and solve the linear system
+        \item Obtain the new state (hopefully closer to the minimum)
+        \item Iterate
     \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Linearizar la Función de Error}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Linearize the Error Function}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Podemos aproximar el error al rededor de una estimación inicial $\stateBold$ a través de una expansión de Taylor
+        \item We can approximate the error around an initial estimate $\stateBold$ using a Taylor expansion
     \end{itemize}
     
     \begin{equation*}
-        \error_{i}(\stateBold + \vec{\Delta}\stateBold) \simeq  \underbrace{\error_{i}(\stateBold)}_{\error_{i}} + \jacobian_{i}\vec{\Delta}\stateBold \quad \text{con} \quad \jacobian_{i} = \dfrac{\partial\error_{i}(\stateBold)}{\partial\stateBold}
+        \error_{i}(\stateBold + \vec{\Delta}\stateBold) \simeq  \underbrace{\error_{i}(\stateBold)}_{\error_{i}} + \jacobian_{i}\vec{\Delta}\stateBold \quad \text{with} \quad \jacobian_{i} = \dfrac{\partial\error_{i}(\stateBold)}{\partial\stateBold}
     \end{equation*}
     
 \end{frame}
 
 \begin{frame}
-    \frametitle{Error Cuadrático}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Squared Error}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Con la linealización anterior, podemos fijar $\stateBold$ y llevar a cabo la minimización en los incrementos $\Delta\stateBold$
-        \item Reemplazamos la expansión de Taylor en los términos de error al cuadrado:
+        \item With the above linearization, we can fix $\stateBold$ and perform minimization on the increments $\Delta\stateBold$
+        \item Substitute the Taylor expansion into the squared error terms:
         \only<1>{
             \begin{align*}
                 e_{i}(\stateBold + \vec{\Delta}\stateBold) &= \dots
@@ -186,12 +169,12 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Error Cuadrático (cont.)}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Squared Error (cont.)}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Todos los sumandos son escalares por lo que la transposición no tiene ningún efecto
-        \item Agrupando términos similares obtenemos:
+        \item All terms are scalars, so transposition has no effect
+        \item Grouping similar terms, we obtain:
         \only<1>{
             \begin{align*}
                 e_{i}(\stateBold + \vec{\Delta}\stateBold) &\simeq \error_{i}^{\top} \informationMatrix_{i} \error_{i} + \error_{i}^{\top} \informationMatrix_{i} \jacobian_{i} \Delta \stateBold + \Delta \stateBold^{\top} \jacobian_{i}^{\top} \informationMatrix_{i} \error_{i} +  \Delta \stateBold^{\top} \jacobian_{i}^{\top} \informationMatrix_{i} \jacobian_{i} \Delta \stateBold
@@ -216,12 +199,12 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Error Global}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Global Error}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item El error global es la suma de términos de errores cuadrados correspondientes a las medidas individuales
-        \item Forma una nueva expresión, que se aproxima al error global en la vecindad de la solución actual $\stateBold$
+        \item The global error is the sum of squared error terms corresponding to individual measurements
+        \item Forms a new expression approximating the global error near the current solution $\stateBold$
     \end{itemize}
     
     \begin{align*}
@@ -234,8 +217,8 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Error Global (cont.)}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Global Error (cont.)}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{align*}
         F\left(\stateBold + \Delta \stateBold \right) &\simeq \sum_{i} \left( c_{i} + 2 \linearSystemb^{\top}_{i} \Delta \stateBold + \Delta \stateBold^{\top} \linearSystemH_{i} \Delta \stateBold \right) \\
@@ -243,7 +226,7 @@
         &= c + 2 \linearSystemb^{\top} \Delta \stateBold + \Delta \stateBold^{\top} \linearSystemH \Delta \stateBold
     \end{align*}
     
-    con
+    with
     
     \begin{align*}
         \linearSystemb^{\top} &= \sum_{i} \error_{i}^{\top} \informationMatrix_{i} \jacobian_{i} \\ 
@@ -254,53 +237,53 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Forma Cuadrática}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Quadratic Form}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item<1-> Podemos escribir los términos de error global como una forma cuadrática en $\Delta \stateBold$
+        \item<1-> We can write the global error terms as a quadratic form in $\Delta \stateBold$
         
         \begin{equation*}
             F\left(\stateBold + \Delta \stateBold \right) = c + 2 \linearSystemb^{\top} \Delta \stateBold + \Delta \stateBold^{\top} \linearSystemH \Delta \stateBold
         \end{equation*}
         
-        \item<1> \alert{¿Cómo calcular el mínimo de una forma cuadrática?}
-        \item<2-> Calcular la derivada de  $F\left(\stateBold + \Delta \stateBold \right)$ con respecto a $\Delta \stateBold$ (dado $\stateBold$)
-        \item<2-> Derivamos e igualamos a 0
-        \item<2-> resolvemos
+        \item<1> \alert{How to compute the minimum of a quadratic form?}
+        \item<2-> Compute the derivative of $F\left(\stateBold + \Delta \stateBold \right)$ with respect to $\Delta \stateBold$ (given $\stateBold$)
+        \item<2-> Differentiate and set to 0
+        \item<2-> Solve
     \end{itemize}
 
 \end{frame}
 
 \begin{frame}
-    \frametitle{Derivando la forma cuadrática}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Differentiating the Quadratic Form}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Dada la forma cuadrática
+        \item Given the quadratic form
         \begin{equation*}
             f(\stateBold) = \stateBold^{\top} \linearSystemH \stateBold + \linearSystemb^{\top} \stateBold
         \end{equation*}
-        \item La primera derivada es
+        \item The first derivative is
         \begin{equation*}
             \dfrac{\partial f}{\partial \stateBold} = \left( \linearSystemH + \linearSystemH^{\top} \right) \stateBold + \linearSystemb
         \end{equation*}
     \end{itemize}
     
-    Ver: The Matrix Cookbook, sección 2.4.2
+    See: The Matrix Cookbook, section 2.4.2
    
 \end{frame}
 
 \begin{frame}
-    \frametitle{Forma Cuadrática}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Quadratic Form}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Podemos escribir los términos de error global de forma cuadrática en $\Delta \stateBold$
+        \item We can write the global error terms as a quadratic form in $\Delta \stateBold$
         \begin{equation*}
             F\left(\stateBold + \Delta \stateBold \right) = c + 2 \linearSystemb^{\top} \Delta \stateBold + \Delta \stateBold^{\top} \linearSystemH \Delta \stateBold
         \end{equation*}
-        \item La derivada de $F\left(\stateBold + \Delta \stateBold \right)$
+        \item The derivative of $F\left(\stateBold + \Delta \stateBold \right)$
         \begin{equation*}
             \dfrac{\partial F\left(\stateBold + \Delta \stateBold \right)}{\partial \Delta \stateBold} \simeq 2 \linearSystemb + 2 \linearSystemH \Delta \stateBold
         \end{equation*}
@@ -309,23 +292,23 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Minimizando la forma cuadrática}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Minimizing the Quadratic Form}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Derivada de $F\left(\stateBold + \Delta \stateBold \right)$
+        \item Derivative of $F\left(\stateBold + \Delta \stateBold \right)$
         \begin{equation*}
             \dfrac{\partial F\left(\stateBold + \Delta \stateBold \right)}{\partial \Delta \stateBold} \simeq 2 \linearSystemb + 2 \linearSystemH \Delta \stateBold
         \end{equation*}
-        \item Igualando a 0
+        \item Setting to 0
         \begin{equation*}
             0 = 2 \linearSystemb + 2 \linearSystemH \Delta \stateBold
         \end{equation*}
-        \item Lo que lleva al sistema lineal
+        \item Leads to the linear system
         \begin{equation*}
             \linearSystemH \Delta \stateBold = -\linearSystemb 
         \end{equation*}
-        \item La solución para el incremento $\Delta \stateBold^{*}$ es
+        \item The solution for the increment $\Delta \stateBold^{*}$ is
         \begin{equation*}
              \Delta \stateBold^{*} = - \inverse{\linearSystemH} \linearSystemb 
         \end{equation*}
@@ -334,24 +317,24 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Solución con Gauss-Newton}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Solution with Gauss-Newton}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
-    Iterar los siguientes pasos:
+    Iterate the following steps:
     \begin{itemize}
-        \item Lineanizar cerca de $\stateBold$ y computar para cada medición
+        \item Linearize around $\stateBold$ and compute for each measurement
         \begin{equation*}
             \error_{i}(\stateBold + \vec{\Delta}\stateBold) \simeq  \error_{i}(\stateBold) + \jacobian_{i}\vec{\Delta}\stateBold
         \end{equation*}
-        \item Computar los términos del sistema lineal
+        \item Compute the terms of the linear system
         \begin{equation*}
             \linearSystemb^{\top} = \sum_{i} \error_{i}^{\top} \informationMatrix_{i} \jacobian_{i} \quad \quad \linearSystemH = \sum_{i} \jacobian_{i}^{\top} \informationMatrix_{i} \jacobian_{i}
         \end{equation*}
-    \item Resolver el sistema lineal
+    \item Solve the linear system
     \begin{equation*}
         \Delta \stateBold^{*} = - \inverse{\linearSystemH} \linearSystemb 
     \end{equation*}
-    \item Actualizar el estado
+    \item Update the state
     \begin{equation*}
         \stateBold \leftarrow \stateBold + \Delta \stateBold^{*}
     \end{equation*} 
@@ -360,24 +343,24 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Ejemplo: Calibración de Odometría}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Example: Odometry Calibration}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Mediciones de Odometría $\controlCommand_{i}$
-        \item Eliminar el error sistemático a través de la calibración
-        \item Suposición: disponemos del ground-truth de odometría $\controlCommand_{i}^{*}$
-        \item Ground-truth dado por sistemas: Motion Capture (Vicon), Scan-Matching o SLAM
+        \item Odometry measurements $\controlCommand_{i}$
+        \item Remove systematic error through calibration
+        \item Assumption: We have ground-truth odometry $\controlCommand_{i}^{*}$
+        \item Ground-truth provided by systems: Motion Capture (Vicon), Scan-Matching, or SLAM
     \end{itemize}
     
 \end{frame}
 
 \begin{frame}
-    \frametitle{Ejemplo: Calibración de Odometría}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Example: Odometry Calibration}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Hay una función que $f_{i}(\stateBold)$ que dado algunos parámetros de bias $\stateBold$, devuelve una odometría corregida (\emph{unbiased}) para la lectura ruidosa $\controlCommand_{i}^{\prime}$ 
+        \item There is a function $f_{i}(\stateBold)$ that, given some bias parameters $\stateBold$, returns a corrected (unbiased) odometry for the noisy reading $\controlCommand_{i}^{\prime}$ 
         \begin{equation*}
             \controlCommand_{i}^{\prime} = f_{i}(\stateBold) =
             \begin{bmatrix}
@@ -387,24 +370,24 @@
             \end{bmatrix}
             \controlCommand_{i}
         \end{equation*}
-    \item Para obtener la función de corrección $f(\stateBold)$, necesitamos encontrar los parámetros $\stateBold$
+    \item To obtain the correction function $f(\stateBold)$, we need to find the parameters $\stateBold$
     \end{itemize}
     
 \end{frame}
 
 \begin{frame}
-    \frametitle{Calibración de Odoemtría (cont.)}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Odometry Calibration (cont.)}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     \begin{itemize}
 
-        \item El vector estado es 
+        \item The state vector is 
         \begin{equation*}
             \stateBold =
             \begin{bmatrix}
                 x_{11} & x_{12} & x_{13} & x_{21} & x_{22} & x_{23} & x_{31} & x_{32} & x_{33}
             \end{bmatrix}
         \end{equation*}
-        \item La función error es
+        \item The error function is
         \begin{equation*}
             \error_{i}(\stateBold) = \controlCommand_{i}^{*} - 
             \begin{bmatrix}
@@ -414,24 +397,15 @@
             \end{bmatrix}
             \controlCommand_{i}
         \end{equation*}
-        \item Su derivada es
+        \item Its derivative is
         
-    %    \begin{equation*}
-    %        \jacobian_{i} = \dfrac{\partial \error_{i}(\stateBold)}{\partial \stateBold} = -
-    %        \begin{bmatrix}
-    %            u_{i,x} & u_{i,y} & u_{i,\theta} & 0 & 0 & 0 & 0 & 0 & 0 \\
-    %            0 & 0 & 0 & u_{i,x} & u_{i,y} & u_{i,\theta} & 0 & 0 & 0 \\
-    %            0 & 0 & 0 & 0 & 0 & 0 & u_{i,x} & u_{i,y} & u_{i,\theta}
-    %        \end{bmatrix}
-    %    \end{equation*}
-    
         \begin{center}
             \includegraphics[width=0.8\columnwidth]{images/odometry_calibration_jacobian.pdf}
         \end{center}
         
-        Que la primera derivada (Jacobiano) no dependa de $\stateBold$, es lo menos común, ya que significa que la función $\error$ es lineal!
+        The fact that the first derivative (Jacobian) does not depend on $\stateBold$ is uncommon, as it means the error function $\error$ is linear!
         
-        En este caso solo vamos a tener que hacer una sola iteración.
+        In this case, only one iteration is needed.
 
     \end{itemize}
 
@@ -439,41 +413,41 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Preguntas}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Questions}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item<1-> ¿Cómo lucen los parámetros si la odometría es perfecta?
+        \item<1-> What do the parameters look like if the odometry is perfect?
         \begin{itemize}
-            \item<2-> La matriz debería ser la identidad. Entonces el error es 0, y por lo tanto, encontramos el mínimo.
+            \item<2-> The matrix should be the identity. Thus, the error is 0, and we have found the minimum.
         \end{itemize}
-        \item<3-> ¿Cuantas mediciones son necesarias para encontrar la solución al problema de calibración?
+        \item<3-> How many measurements are needed to solve the calibration problem?
         \begin{itemize}
-            \item<4-> Tenemos que ver cuantas variables desconocidas tenemos y cuanta información nos provee cada observación. Tenemos 9 variables desconocidas. Cada observación nos da información de 3 variables (nos da 3 ecuaciones). Por lo tanto, vamos a necesitar al menos 3 observaciones.
+            \item<4-> We need to consider the number of unknown variables and the information provided by each observation. We have 9 unknowns. Each observation provides information about 3 variables (3 equations). Therefore, at least 3 observations are needed.
         \end{itemize}
-        \item<5-> $\linearSystemH$ es simétrica. ¿Por qué?
+        \item<5-> $\linearSystemH$ is symmetric. Why?
         \begin{itemize}
-            \item<6-> La forma en que $\linearSystemH$ es simétrica porque  $\linearSystemH = \jacobian^{\top}\Omega\jacobian$. $\Omega$ es simétrica definida postiva y $\jacobian$ tambien, y por lo tanto el producto también.
+            \item<6-> $\linearSystemH$ is symmetric because $\linearSystemH = \jacobian^{\top}\Omega\jacobian$. $\Omega$ is symmetric positive definite, and $\jacobian$ is also symmetric, so the product is symmetric.
         \end{itemize}
-        \item<7-> ¿Cómo afecta la estructura de la función de medición a la estructura de $\linearSystemH$?
+        \item<7-> How does the structure of the measurement function affect the structure of $\linearSystemH$?
         \begin{itemize}
-            \item<8-> $\linearSystemH$ es esparsa porque los jacobianos son esparsos. Los jacobianos son esparsos porque codifican cuanta información nos da una medición sobre todas las variables de estado. Por lo tanto, si nuestras mediciones solo relacionan algunas variables (como es el caso de SLAM), entonces la $\linearSystemH$ será esparsa.
+            \item<8-> $\linearSystemH$ is sparse because the Jacobians are sparse. The Jacobians are sparse because they encode how much information a measurement provides about all state variables. Thus, if our measurements only relate some variables (as in SLAM), $\linearSystemH$ will be sparse.
         \end{itemize}
     \end{itemize}
 
 \end{frame}
 
 \begin{frame}
-    \frametitle{¿Cómo Resolver de manera eficiente un Sistema Lineal?}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{How to Efficiently Solve a Linear System?}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     \begin{itemize}
-        \item Sistema Lineal $\linearSystemH \Delta \stateBold = -\linearSystemb$
-        \item Podemos resolverlo utilizando inversión de matrices (en teoría)
-        \item En la práctica:
+        \item Linear system $\linearSystemH \Delta \stateBold = -\linearSystemb$
+        \item We can solve it using matrix inversion (in theory)
+        \item In practice:
         \begin{itemize}
-            \item Factorización de Cholesky
-            \item Descomposición QR
-            \item Métodos iterativos como el método del Gradiente Conjugado (para sistemas grandes)
+            \item Cholesky factorization
+            \item QR decomposition
+            \item Iterative methods like the Conjugate Gradient method (for large systems)
         \end{itemize}
         
     \end{itemize}
@@ -481,18 +455,18 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Descomposición de Cholesky para Resolver un Sistema Lineal}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Cholesky Decomposition to Solve a Linear System}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Sea la matriz $\vec{A}$ simétrica positiva definida
-        \item El sistema a resolver es $\vec{A} \vec{x} = \vec{b}$
-        \item Cholesky lleva a $\vec{A} = \vec{L} \vec{L}^{\top}$ con $\vec{L}$ matriz triangular inferior
-        \item<2> Resolvemos primero
+        \item Let $\vec{A}$ be a symmetric positive definite matrix
+        \item The system to solve is $\vec{A} \vec{x} = \vec{b}$
+        \item Cholesky decomposition yields $\vec{A} = \vec{L} \vec{L}^{\top}$, where $\vec{L}$ is a lower triangular matrix
+        \item<2> First solve
         \begin{equation*}
             \vec{L} \vec{y} = \vec{b}
         \end{equation*}
-        \item<2> y luego,
+        \item<2> Then solve,
         \begin{equation*}
             \vec{L}^{\top} \vec{x} = \vec{y}
         \end{equation*}
@@ -502,53 +476,53 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Resumen de Gauss-Newton}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Gauss-Newton Summary}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
-    Método para minimizar un error al cuadrado:
+    Method to minimize a squared error:
     \begin{itemize} 
-        \item Comenzar con una solución inicial (\emph{initial guess})
-        \item Linealizar las funciones de error individuales
-        \item Esto lleva a una forma cuadrática
-        \item Se obtiene un sistema lineal derivando e igualando a 0
-        \item Resolver el sistema lineal conduce a una actualización del estado
-        \item Iterar
+        \item Start with an initial solution (initial guess)
+        \item Linearize the individual error functions
+        \item This leads to a quadratic form
+        \item A linear system is obtained by differentiating and setting to 0
+        \item Solving the linear system yields a state update
+        \item Iterate
     \end{itemize}
     
 \end{frame}
 
 \begin{frame}
     \frametitle{Least Squares vs. Probabilistic State Estimation}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Hasta ahora, minimizamos una función de error
-        \item ¿Cómo se relaciones esto con la estimación de estado en el sentido probabilístico?
+        \item So far, we minimized an error function
+        \item How does this relate to state estimation in a probabilistic sense?
     \end{itemize}
     
 \end{frame}
 
 \begin{frame}
-    \frametitle{Comencemos con Estimación de estado}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Start with State Estimation}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Regla de Bayes, suposiciones de independencia y Markov nos permiten reescribir
+        \item Bayes' rule, independence, and Markov assumptions allow us to rewrite
         \begin{equation*}
             p\left( \state_{0:t} | \observation_{1:t}, \controlCommand_{1:t} \right) = \eta p\left( \state_{0} \right) \prod_{t} \left[ p\left( \state_{t} | \state_{t-1}, \controlCommand_{t} \right) p\left( \observation_{t} | \state_{t} \right) \right]
         \end{equation*}
     \end{itemize}
     
-    \note{p(x0) es un prior. Observar que en x0 no tenemos observaciones ni comandos de control}
+    \note{p(x0) is a prior. Note that for x0, we have no observations or control commands.}
     
 \end{frame}
 
 \begin{frame}
     \frametitle{Log Likelihood}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Reescribiendo como el log likelihood, lleva a
+        \item Rewriting as the log likelihood leads to
         \begin{equation*}
             \log p\left( \state_{0:t} | \observation_{1:t}, \controlCommand_{1:t} \right) = \text{const.}  \log p\left( \state_{0} \right) + \sum_{t} \left[ \log p\left( \state_{t} | \state_{t-1}, \controlCommand_{t} \right) + \log p\left( \observation_{t} | \state_{t} \right) \right]
         \end{equation*}
@@ -557,11 +531,11 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Suposición Gaussiana}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Gaussian Assumption}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Suponiendo distribución Gaussiana
+        \item Assuming Gaussian distribution
         \begin{equation*}
             \log p\left( \state_{0:t} | \observation_{1:t}, \controlCommand_{1:t} \right) = \text{const.}  \log \underbrace{p\left( \state_{0} \right)}_{\mathcal{N}} + \sum_{t} \left[ \log \underbrace{p\left( \state_{t} | \state_{t-1}, \controlCommand_{t} \right)}_{\mathcal{N}} + \log \underbrace{p\left( \observation_{t} | \state_{t} \right)}_{\mathcal{N}} \right]
         \end{equation*}
@@ -570,44 +544,44 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Log de una Gaussiana}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Log of a Gaussian}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
 
     
     \begin{itemize}
-        \item La función de distribución de la distribución normal está definida como
+        \item The probability density function of the normal distribution is defined as
         \begin{equation*}
             p(x)=\det(2\pi\covariance)^{\frac{1}{2}} \exp\left(-\dfrac{1}{2} (x - \mu )^{\top} \inverse{\covariance} (x - \mu )  \right)
         \end{equation*}
         
-        \item Log likelihood de una Gaussiana
+        \item Log likelihood of a Gaussian
         \begin{equation*}
-            \log \mathcal{N}(x, \mu, \Sigma) =  \text{const.} - \dfrac{1}{2} (x - \mu)^{\top} \inverse{\Sigma} (x - \mu)
+            \log \mathcal{N}(x; \mu, \Sigma) =  \text{const.} - \dfrac{1}{2} (x - \mu)^{\top} \inverse{\Sigma} (x - \mu)
         \end{equation*}
     \end{itemize}
     
 \end{frame}
 
 \begin{frame}
-    \frametitle{Función de Error como Exponente}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Error Function as Exponent}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Log likelihood de una Gaussiana
+        \item Log likelihood of a Gaussian
         \begin{equation*}
-            \log \mathcal{N}(x, \mu, \Sigma) =  \text{const.} - \dfrac{1}{2} \underbrace{\underbrace{(x - \mu)^{\top}}_{\error^{\top}(x)} \underbrace{\inverse{\Sigma}}_{\informationMatrix} \underbrace{(x - \mu)}_{\error(x)}}_{e(x)}
+            \log \mathcal{N}(x; \mu, \Sigma) =  \text{const.} - \dfrac{1}{2} \underbrace{\underbrace{(x - \mu)^{\top}}_{\error^{\top}(x)} \underbrace{\inverse{\Sigma}}_{\informationMatrix} \underbrace{(x - \mu)}_{\error(x)}}_{e(x)}
         \end{equation*}
-        \item está a una constante de equivalencia de las funciones de error usadas antes
+        \item is equivalent, up to a constant, to the error functions used earlier
     \end{itemize}
     
 \end{frame}
 
 \begin{frame}
-    \frametitle{Log Likelihood con Términos de Error}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Log Likelihood with Error Terms}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Suponiendo distribución Gaussiana
+        \item Assuming Gaussian distribution
         \begin{equation*}
             \log p\left( \state_{0:t} | \observation_{1:t}, \controlCommand_{1:t} \right) = \text{const.} - \dfrac{1}{2} e_{p}(\state) -  \dfrac{1}{2} \sum_{t} \left[ e_{\controlCommand_{t}}(\state) + e_{\observation_{t}}(\state)\right]
         \end{equation*}
@@ -616,15 +590,28 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Maximizing el Log Likelihood}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Log Likelihood with Error Terms}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Suponiendo distribución Gaussiana
+        \item Assuming Gaussian distribution
         \begin{equation*}
             \log p\left( \state_{0:t} | \observation_{1:t}, \controlCommand_{1:t} \right) = \text{const.} - \dfrac{1}{2} e_{p}(\state) -  \dfrac{1}{2} \sum_{t} \left[ e_{\controlCommand_{t}}(\state) + e_{\observation_{t}}(\state)\right]
         \end{equation*}
-        \item Maximizando el log likelihood lleva a 
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}
+    \frametitle{Maximizing the Log Likelihood}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    
+    \begin{itemize}
+        \item Assuming Gaussian distribution
+        \begin{equation*}
+            \log p\left( \state_{0:t} | \observation_{1:t}, \controlCommand_{1:t} \right) = \text{const.} - \dfrac{1}{2} e_{p}(\state) -  \dfrac{1}{2} \sum_{t} \left[ e_{\controlCommand_{t}}(\state) + e_{\observation_{t}}(\state)\right]
+        \end{equation*}
+        \item Maximizing the log likelihood leads to 
         \begin{equation*}
             \argmax \log p\left( \state_{0:t} | \observation_{1:t}, \controlCommand_{1:t} \right) = \argmin e_{p}(\state) + \sum_{t} \left[ e_{\controlCommand_{t}}(\state) + e_{\observation_{t}}(\state)\right]
         \end{equation*}
@@ -634,10 +621,10 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Minimizar el error cuadrático es equivalente a Maximizar el Log Likelihood de Distribuciones Gaussianas Independientes}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Minimizing the Squared Error is Equivalent to Maximizing the Log Likelihood of Independent Gaussian Distributions}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     \begin{itemize}
-        \item Con términos de error individuales para los controles, mediciones y un prior:
+        \item With individual error terms for controls, measurements, and a prior:
         \begin{equation*}
             \argmax \log p\left( \state_{0:t} | \observation_{1:t}, \controlCommand_{1:t} \right) = \argmin e_{p}(\state) + \sum_{t} \left[ e_{\controlCommand_{t}}(\state) + e_{\observation_{t}}(\state)\right]
         \end{equation*}
@@ -646,24 +633,24 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Resumen}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Summary}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     
     \begin{itemize}
-        \item Técnica para minimizar funciones de error cuadráticas
-        \item Gauss-Newton es un enfoque iterativo para problemas no lineales
-        \item Utiliza linearización (¡aproximación!)
-        \item Equivalente a maximizar el log likelihood de Gaussianas independientes
-        \item Método popular en muchas disciplinas.
+        \item Technique for minimizing quadratic error functions
+        \item Gauss-Newton is an iterative approach for nonlinear problems
+        \item Uses linearization (approximation!)
+        \item Equivalent to maximizing the log likelihood of independent Gaussians
+        \item Popular method in many disciplines.
     \end{itemize}
 
     
 \end{frame}
 
 \begin{frame}
-    \frametitle{Bibliografía de Gauss-Newton}
-    \note{Extraído de Curso de Cyrill Stachniss https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
+    \frametitle{Gauss-Newton Bibliography}
+    \note{Excerpt from Cyrill Stachniss's course: https://youtu.be/r2cyMQ5NB1o?si=WYODHSkWun3FL7jR}
     \begin{itemize}
-        \item Capítulo 11.4 de \cite{thrun2005probabilistic}
+        \item Chapter 11.4 of \cite{thrun2005probabilistic}
     \end{itemize}
 \end{frame}
