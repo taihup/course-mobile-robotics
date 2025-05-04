@@ -549,22 +549,30 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Forward measurement model vs. inverse measurement model}
-    \note{information taken from https://youtu.be/v-Rm9TUG9LA}
+    \frametitle{Forward/Inverse Measurement Model}
+    \note{Content from https://youtu.be/v-Rm9TUG9LA}
     
-    \TODO{better explain inverse sensor model and forward sensor model}
+    The \emph{occupancy grid mapping} algorithm requires a \emph{marginalized inverse measurement model}, $p(\map_{i}|\state, \observation)$. We say \emph{marginalized} because we only predict the state of a single cell rather than the entire map.
+
+    \begin{itemize}
+        \item \textbf{Forward Measurement Model}: $p(\observation | \map)$. Predicts the measurement we should obtain, given the map state.
+        \item \textbf{Inverse Measurement Model}: $p(\map|\state, \observation)$. Predicts the map we should have, given the current pose and measurement.
+    \end{itemize}
+
+    \emph{Inverse Measurement Models} are used in situations where measurements are more complex than the state.
+        
+    An example is estimating whether a door is open or closed from camera images. Here the state is extremely simple (door closed or open), but the space of all possible measurements is enormous (all possible camera images).
     
-    The \emph{occupancy grid mapping} algorithm requires a marginalized inverse measurement model, $p(\map_{i}|\state, \observation )$. This probability is called inverse because it reasons from effects to causes: it provides information about the world conditioned on a measurement caused by that world.
+    In such cases, it's easier to devise a function that computes the probability of a door being closed from an image, than to describe the probability distribution over all images showing a closed door. In other words, it's easier to implement an inverse sensor model than a forward one.
     
-    \emph{inverse models} are often used in situations where the measurements are more complex than the binary state. An example of such a situation is the problem of estimating whether a door is closed or not from camera images. Here, the state is extremely simple, but the space of all the measurements is enormous. It is therefore easier to design a function that calculates the probability of a door being closed from an image than to describe the probability distribution over all images showing a closed door. In other words, it is easier to implement an inverse sensor model than a forward one.
-    
-    Forward measurement model vs. inverse measurement model
-    \url{https://www.cs.cmu.edu/~thrun/papers/thrun.occ-journal.pdf}
-    \url{http://robots.stanford.edu/papers/thrun.iros01-occmap.pdf}
-    
-    Forward models describe the physics of the environment, from causes (occupancy) to effects (measurements). They are denoted $p(\observation | \map)$.
-    
-    \end{frame}
+    \note{A \emph{forward model} predicts sensor readings based on known system parameters, while an \emph{inverse model} estimates system parameters from observed sensor readings.}
+
+    \note{A forward sensor model, given a hypothetical occupancy grid map, would predict the sonar readings the robot should observe. It would consider all occupied cells within the sonar cone. For example, it might calculate the probability of detecting the closest obstacle, the second closest (if the first isn't detected), or even a random reading due to sensor failure or specular reflection.}
+
+    \note{More info: forward measurement model vs inverse measurement model https://www.cs.cmu.edu/~thrun/papers/thrun.occ-journal.pdf} 
+
+    \note{More info: http://robots.stanford.edu/papers/thrun.iros01-occmap.pdf}
+\end{frame}
     
     \begin{frame}
     \frametitle{Occupancy Mapping Algorithm}
