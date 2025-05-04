@@ -1,399 +1,354 @@
 \begin{frame}
     \frametitle{Particle Filter}
-    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
     \footnotesize
     \begin{itemize}
-        \item With EKF, we are restricted to Gaussian distributions.
-        \item When we use EKF, we obtain a Gaussian distribution that describes where the robot is located.
-        \item In Particle Filter, we use particles or hypotheses that describe where the robot could be.
-        \item Instead of having a parametric form like EKF, which describes the probability distribution with the parameters mean $\mu$ and covariance $\covariance$, Partible Filter uses non-parametric samples as hypotheses about where the robot could be.
-        
+        \item EKF is limited to Gaussian distributions
+        \item With EKF we obtain a Gaussian distribution describing the robot's location
+        \item Particle Filters use particles/hypotheses representing possible robot positions
+        \item Instead of parametric forms (like EKF with mean $\mu$ and covariance $\covariance$), Particle Filters use non-parametric samples as hypotheses
     \end{itemize}
     
     \begin{center}
         \movie[loop]{\includegraphics[width=0.4\columnwidth]{images/particle_filter/particle_filter_video.jpg}}{videos/particle_filter.mp4}
     \end{center}
     
-    \note{Video taken from https://rse-lab.cs.washington.edu/projects/mcl/animations/global-floor.gif}
-    
+    \note{Video from https://rse-lab.cs.washington.edu/projects/mcl/animations/global-floor.gif}
 \end{frame}
-    
+
 \begin{frame}
     \frametitle{Flexible Function Approximation}
-    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
     \footnotesize
     
     \begin{itemize}
-        \item Goal: To be able to estimate any \textbf{arbitrary probability distribution}.
+        \item Goal: Approach that allows estimating any \textbf{arbitrary probability distribution}
     \end{itemize}
     
     \begin{center}
-        \includegraphics[width=0.5\columnwidth]{./images/particle_filter/arbitrary_distribution.pdf}
+    \includegraphics[width=0.5\columnwidth]{./images/particle_filter/arbitrary_distribution.pdf}
     \end{center}
-    
 \end{frame}
-    
+
 \begin{frame}
     \frametitle{Using Samples (Particles)}
-    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
     \footnotesize
     \begin{itemize}
         \item \textbf{Multiple samples} to represent an arbitrary probability distribution
-        \item Samples are more clustered in some areas and less so in others. The number of particles per unit area describes how likely it is that the robot is in that area.
-        \item Each sample accumulates a bit of ``probability mass''
-        \item Samples can be viewed as an approximation to the probability density function (pdf).
-        \item To obtain the PDF, you must integrate over a certain area to obtain the mathematical probability that the robot is in that area.
+        \item Samples cluster in some areas more than others - density indicates likelihood
+        \item Each sample accumulates "probability mass"
+        \item Samples approximate the probability density function (pdf)
+        \item To get the pdf, integrate over an area to obtain the probability mass
+        \item More particles where pdf is high, fewer where low
     \end{itemize}
     
     \begin{center}
-        \includegraphics[width=0.5\columnwidth]{./images/particle_filter/arbitrary_distribution_samples.pdf}
+    \includegraphics[width=0.5\columnwidth]{./images/particle_filter/arbitrary_distribution_samples.pdf}
     \end{center}
-    
 \end{frame}
-    
+
 \begin{frame}
     \frametitle{Using Weighted Samples}
-    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
     \footnotesize
     \begin{itemize}
-        \item \textbf{Multiple Weighted Samples} to Represent an Arbitrary Probability Distribution
-        \item We can reduce the number of samples we need by adding weights to each sample.
-        \item The more weight a sample has, the more probability mass there is in that region.
-        \item The weights of all the particles together must sum to 1.
-        \item Initially, we could add a uniform weight to each sample. For example, if we have $n$ samples, then each sample has weight $\frac{1}{n}$
+        \item Alternative: Use \textbf{weighted samples} to reduce required particle count
+        \item Higher weight indicates more probability mass in that region
+        \item All weights must sum to 1
+        \item Initially, uniform weights can be assigned (e.g., $1/n$ for $n$ samples)
     \end{itemize}
-
+    
     \begin{center}
         \includegraphics[width=0.5\columnwidth]{./images/particle_filter/arbitrary_distribution_weighted_samples.pdf}
     \end{center}
-
 \end{frame}
-    
+
 \begin{frame}
     \frametitle{Particle Filter}
-    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
-    
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
     \footnotesize
     \begin{itemize}
-        \item Note that this is an approximation of the PDF (\emph{Probabilistic Density Function}).
-        \item It is important to have a sufficient number of samples to adequately represent the PDF.
+        \item Note this is an approximation of the PDF (Probability Density Function)
+        \item Sufficient samples are needed to properly represent the PDF
     \end{itemize}
-
 \end{frame}
-
 
 \begin{frame}
     \frametitle{Particle Set}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
+    
     \begin{itemize}
-        \item Set of weighted particles.
+        \item Weighted particle set:
+            
         \begin{center}
             \includegraphics[width=0.5\columnwidth]{./images/particle_filter/weighted_samples.pdf}
         \end{center}
-        \item The particles represent the posterior belief given by:
+
+        \item Particles represent the posterior belief:
         \begin{equation*}
-            p(x) = \sum_{j=1}^{J} w^{[j]} \delta_{x^{[j]}}(x),
+            p(x) = \sum_{j=1}^{J} w^{[j]} \delta_{x^{[j]}}(x)    
         \end{equation*}
-        where $\delta_{x^{[j]}}(x)$ is the Dirac delta function centered at the particle's location $x^{[j]}$.
+        where $\delta_{x^{[j]}}(x)$ is the Dirac delta centered at particle $x^{[j]}$
+
         \begin{equation*}
             \delta(y) = 
             \begin{cases} 
             \infty, & y = x^{[j]} \\ 
             0, & y \neq x^{[j]} 
-            \end{cases}.
+            \end{cases}    
         \end{equation*}
-        \note{The function tends to infinity when $x = j$ and is equal to 0 for any other value of $x$.}
+
+        \note{The Dirac delta models impulses/events}
+        \note{More particles are needed for more complex pdfs}
     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Particles for Approximation}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
+    
     \begin{itemize}
-        \item Particles to approximate a function.
+        \item Particles approximating a function
+        
         \begin{center}
             \includegraphics[width=0.45\columnwidth]{./images/particle_filter/gaussian_approximation_by_sampling.pdf}
             \includegraphics[width=0.45\columnwidth]{./images/particle_filter/particles_for_approximation.pdf}
         \end{center}
-        \item The more particles in a region, the higher the probability of the region.
+
+        \item More particles in a region indicates higher probability
     \end{itemize}
+    
     \begin{center}
-        \alert{How to obtain such samples?}
+        \alert{How to obtain these samples?}
     \end{center}
+
+    \note{Closed-form sampling is only possible for few distributions}
 \end{frame}
 
 \begin{frame}
     \frametitle{Closed-Form Sampling is Only Possible for Few Distributions}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
+
     \begin{itemize}
-        \item Example: Gaussian distribution.
-        \begin{center}
-            \includegraphics[width=0.5\columnwidth]{./images/particle_filter/gaussian_approximation_by_sampling.pdf}
-        \end{center}
-        \begin{equation*}
-            x \leftarrow \frac{1}{2} \sum_{i=1}^{12} \text{rand}(-\sigma, \sigma)
-        \end{equation*}
+        \item Example: Sampling from a Gaussian Distribution
     \end{itemize}
-    How to sample using another distribution?
-    \note{Rejection sampling technique. Not used in particle filters because it is very inefficient.}
-    \note{Importance Sampling Principle technique.}
+
+    \begin{figure}
+        \begin{minipage}[m]{.5\textwidth}
+            \raggedright
+            \begin{center}
+                \includegraphics[width=\columnwidth]{./images/particle_filter/gaussian_approximation_by_sampling.pdf}
+            \end{center}
+        \end{minipage}%
+        \begin{minipage}[m]{.5\textwidth}
+            \raggedleft
+            \centering
+            \begin{equation*}
+                x \leftarrow \frac{1}{2} \sum_{i=1}^{12} \text{rand}(-\sigma, \sigma)    
+            \end{equation*}
+        \end{minipage}
+    \end{figure}
+
+    How to sample using other distributions?
+
+    \note{Importance Sampling Principle technique}
 \end{frame}
 
 \begin{frame}
     \frametitle{Importance Sampling Principle}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
+
+    \scriptsize
+
     \begin{itemize}
-        \item We can use a different distribution $\pi$ to generate samples from $f$.
-        \item Consider the "differences between $\pi$ and $f$" using a weight $w = f(x) / \pi(x)$.
-        \item Target: $f$.
-        \item Proposal: $\pi$.
-        \item Precondition: $f(x) > 0 \implies \pi(x) > 0$.
+        \item We can use a different distribution $\pi$ to generate samples from target distribution $f$
+        \item Compensate differences using weights $w = f(x) / \pi(x)$
+        \item Target distribution $f$
+        \item Proposal distribution $\pi$
+        \item Precondition: $f(x) > 0 \implies \pi(x) > 0$
+        
         \begin{center}
-            \includegraphics[width=0.45\textwidth]{./images/particle_filter/importance_sampling_principle.pdf}
+        \includegraphics[width=0.4\textwidth]{./images/particle_filter/importance_sampling_principle.pdf}
         \end{center}
+        
+        Larger differences between target and proposal yield higher weights
     \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Particle Filter}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \frametitle{Particle Filter for Dynamic State Estimation}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
+
     \begin{itemize}
-        \item Recursive Bayesian filter.
-        \item Non-parametric approach.
-        \item Models the distribution using samples.
-        \item \textbf{Prediction}: Sample from the proposal distribution.
-        \item \textbf{Correction}: Weight by the ratio between the target and proposal distributions.
-        \item \alert{The more samples we use, the better the estimate!}
+        \item Implements Recursive Bayesian Filter (prediction + correction steps)
+        \item Non-parametric approach (handles non-Gaussian distributions)
+        \item Models distribution through samples
+        \item \textbf{Prediction}: Sample from proposal distribution
+        \item \textbf{Correction}: Weight by target/proposal ratio
+        \item \alert{More samples yield better estimates!}
     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Particle Filter Algorithm}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
+
     \begin{enumerate}
-        \item Sample particles using the proposal distribution.
+        \item Sample particles using proposal distribution:
         \begin{equation*}
-            x_t^{[j]} \sim \text{proposal}(x_t | \ldots)
+            x_{t}^{[j]} \sim \pi(x_t) 
         \end{equation*}
-        \item Compute importance weights.
+        \item Compute importance weights:
         \begin{equation*}
-            w_t^{[j]} = \frac{\text{target}(x_t^{[j]})}{\text{proposal}(x_t^{[j]})}
+            w_t^{[j]} = \frac{p(x_t^{[j]})}{\pi(x_t^{[j]})}
         \end{equation*}
-        \item Resampling: Select particle $i$ with probability $w_t^{[j]}$ and repeat $J$ times.
+        \item Resampling: Select particle $i$ with probability $\propto w_t^{[j]}$, repeat $J$ times
     \end{enumerate}
-    \note{Replace unlikely samples with more likely ones.}
+
+    Connection to Recursive Bayesian Filter:
+    \begin{itemize}
+        \item Step 1: Prediction using motion model
+        \item Steps 2-3: Correction using observation model
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Particle Filter Algorithm}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
+
     \begin{algorithmic}[1]
-        \Procedure{ParticleFilter}{$\mathcal{X}_{t-1}, u_{t}, z_{t}$}
-        \State $\bar{\mathcal{X}}_t = \mathcal{X}_t = \emptyset$
-        \For{$j = 1$ to $J$}
-            \State Sample $x_t^{[j]} \sim \pi(x_t)$
-            \State $w_t^{[j]} = \dfrac{p(x_t^{[j]})}{\pi(x_{t}^{[j]})}$
-            \State $\bar{\mathcal{X}}_t = \bar{\mathcal{X}}_t + \langle x_t^{[j]}, w_t^{[j]}\rangle$
-        \EndFor
-        \For{$j = 1$ to $M$}
-            \State Draw $i$ with probability $\propto w_t^{[i]}$
-            \State Add $x_t^{[i]}$ to $\mathcal{X}_t$
-        \EndFor
-        \State Return $\mathcal{X}_t$
-        \EndProcedure
+    \Procedure{ParticleFilter}{$\mathcal{X}_{t-1}, u_{t}, z_{t}$}
+    \State $\bar{\mathcal{X}}_t = \mathcal{X}_t = \emptyset$
+    \For{$j = 1$ to $J$}
+        \State sample $x_t^{[j]} \sim \pi(x_t)$
+        \State $w_t^{[j]} = \dfrac{p(x_t^{[j]})}{\pi(x_t^{[j]})}$
+        \State $\bar{\mathcal{X}}_t = \bar{\mathcal{X}}_t + \langle x_t^{[j]}, w_t^{[j]}\rangle$
+    \EndFor
+    \For{$j = 1$ to $M$}
+        \State Draw $i$ with probability $\propto w_t^{[i]}$
+        \State Add $x_t^{[i]}$ to $\mathcal{X}_t$
+    \EndFor
+    \State return $\mathcal{X}_t$
+    \EndProcedure
     \end{algorithmic}
 \end{frame}
 
 \begin{frame}
     \frametitle{Monte Carlo Localization}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
-    Monte Carlo Localization: Particle Filter for robot localization.
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
+
+    Monte Carlo Localization: Particle Filter for robot localization
 \end{frame}
 
 \begin{frame}
     \frametitle{Monte Carlo Localization}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
+
     \begin{itemize}
-        \item Each particle is a hypothesis of the pose.
-        \item Proposal is the motion model:
+        \item Each particle is a pose hypothesis
+        \item Proposal is motion model:
         \begin{equation*}
-            x_t^{[j]} \sim p(x_t \, | \, x_{t-1}, u_t)
+            x_t^{[j]} \sim p(x_t | x_{t-1}, u_t)
         \end{equation*}
-        \item Correction via the observation model:
+        \item Correction via observation model:
         \begin{equation*}
-            w_t^{[j]} = \frac{\text{target}}{\text{proposal}} \propto p(z_t \, | \, x_t, m)
+            w_t^{[j]} \propto p(z_t | x_t, m)
         \end{equation*}
     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Particle Filter for Localization}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
+
     \begin{algorithmic}[1]
-        \Procedure{ParticleFilter}{$\mathcal{X}_{t-1}, u_{t}, z_{t}$}
+        \Procedure{ParticleFilter}{$\mathcal{X}_{t-1}, u_t, z_t$}
         \State $\bar{\mathcal{X}}_t = \mathcal{X}_t = \emptyset$
         \For{$j = 1$ to $J$}
-            \State Sample $x_t^{[j]} \sim p(x_t \, | \, u_t, x_{t-1}^{[j]})$
-            \State $w_t^{[j]} = p(z_t \, | \, x_t^{[j]})$
+            \State Sample $x_t^{[j]} \sim p(x_t | u_t, x_{t-1}^{[j]})$
+            \State $w_t^{[j]} = p(z_t | x_t^{[j]})$
             \State $\bar{\mathcal{X}}_t = \bar{\mathcal{X}}_t + \langle x_t^{[j]}, w_t^{[j]}\rangle$
         \EndFor
         \For{$i = 1$ to $J$}
             \State Draw $i \in 1,\ldots,J$ with probability $\propto w_t^{[i]}$
             \State Add $x_t^{[i]}$ to $\mathcal{X}_t$
         \EndFor
-        \State Return $\mathcal{X}_t$
-        \EndProcedure
+        \State return $\mathcal{X}_t$
+    \EndProcedure
     \end{algorithmic}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Monte Carlo Localization - Correction Step}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
-    \begin{center}
-        \includegraphics[width=0.8\textwidth]{./images/particle_filter/monte_carlo_correction.pdf}
-    \end{center}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Monte Carlo Localization - Resampling and Prediction}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
-    \begin{center}
-        \includegraphics[width=0.8\textwidth]{./images/particle_filter/monte_carlo_resample_and_predict.pdf}
-    \end{center}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Monte Carlo Localization - Correction Step 2}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
-    \begin{center}
-        \includegraphics[width=0.8\textwidth]{./images/particle_filter/monte_carlo_correction2.pdf}
-    \end{center}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Monte Carlo Localization - Resampling and Prediction 2}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
-    \begin{center}
-        \includegraphics[width=0.8\textwidth]{./images/particle_filter/monte_carlo_resample_and_predict2.pdf}
-    \end{center}
-\end{frame}
-
-\begin{frame}
     \frametitle{Resampling}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
+
     \begin{itemize}
-        \item Select particle $i$ with probability $w_t^{[i]}$. Repeat $J$ times.
-        \item Informally: "Replace unlikely samples with more likely ones."
-        \item Survival of the fittest.
-        \item "Trick" to avoid many samples covering unlikely states.
-        \item Necessary because we have a limited number of samples.
+        \item Select particle $i$ with probability $\propto w_t^{[i]}$, repeat $J$ times
+        \item "Replace unlikely samples with more probable ones"
+        \item Survival of the fittest
+        \item Prevents wasting samples on low-probability states
+        \item Necessary due to finite memory (limited particles)
     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Resampling Methods}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
+
+    \scriptsize
+
     \begin{overlayarea}{\textwidth}{\textheight}
         \only<1>{
             \begin{center}
-                \includegraphics[width=0.35\textwidth]{./images/particle_filter/resampling_rulette_wheel1.pdf}
+                \includegraphics[width=0.3\textwidth]{./images/particle_filter/resampling_rulette_wheel1.pdf}
             \end{center}
         }
         \only<2>{
             \begin{center}
-                \includegraphics[width=0.35\textwidth]{./images/particle_filter/resampling_rulette_wheel2.pdf}
+                \includegraphics[width=0.3\textwidth]{./images/particle_filter/resampling_rulette_wheel2.pdf}
             \end{center}
         }
         \only<3>{
             \begin{center}
-                \includegraphics[width=0.35\textwidth]{./images/particle_filter/resampling_rulette_wheel3.pdf}
+                \includegraphics[width=0.3\textwidth]{./images/particle_filter/resampling_rulette_wheel3.pdf}
             \end{center}
         }
-        \only<3>{
-            \begin{itemize}
-                \item Roulette Wheel.
-                \item Binary search to determine which bucket the ball falls into ($O(J \log(J))$).
-            \end{itemize}
-            \note{The buckets on the roulette wheel represent the particles' weights. The larger the bucket, the more likely the particle is to be selected.}
-            \note{We do this $J$ times. We determine where the ball lands using binary search. The sum of all weights on the wheel is 1. If we generate a random number between 0 and 1, we can use binary search to find the corresponding bucket.}
-        }
+        \begin{itemize}
+            \item Roulette Wheel
+            \item Bucket size corresponds to particle weight
+            \item Requires $J$ selections
+            \item Binary search determines selected bucket ($O(J \log J)$)
+        \end{itemize}
     \end{overlayarea}
 \end{frame}
 
 \begin{frame}
     \frametitle{Resampling Methods}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
+
+    \footnotesize
+
     \begin{overlayarea}{\textwidth}{\textheight}
         \only<1>{
             \begin{center}
-                \includegraphics[width=0.35\textwidth]{./images/particle_filter/resampling_stochastic_universal_sampling1.pdf}
+                \includegraphics[width=0.3\textwidth]{./images/particle_filter/resampling_stochastic_universal_sampling1.pdf}
             \end{center}
         }
         \only<2>{
             \begin{center}
-                \includegraphics[width=0.35\textwidth]{./images/particle_filter/resampling_stochastic_universal_sampling2.pdf}
+                \includegraphics[width=0.3\textwidth]{./images/particle_filter/resampling_stochastic_universal_sampling2.pdf}
             \end{center}
         }
-        \only<2>{
-            \begin{itemize}
-                \item Stochastic Universal Sampling (using $J$ equidistant arrows).
-                \item Also called \emph{Low-Variance Resampling} (avoids rapid particle concentration).
-                \item $O(J)$.
-            \end{itemize}
-            \note{Using arrows placed equidistantly. Rotate them together and select $n$ particles. Generate one random number and select all $J$ particles at once.}
-            \note{Computational cost is linear because we only need to traverse the weights once to determine where all arrows land.}
-            \note{Example: 8 arrows spaced 45 degrees apart.}
-        }
+
+        \begin{itemize}
+            \item Stochastic Universal Sampling (using $J$ equidistant arrows)
+            \item Also called Low-Variance Resampling
+            \item Linear computational cost $O(J)$
+        \end{itemize}
     \end{overlayarea}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Resampling}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
-    \begin{itemize}
-        \item Sampling with replacement (we sample a particle and then put it back in the bag).
-        \item Roulette Wheel resampling is easy to understand but suboptimal in practice.
-        \item \alert{What happens if all particles have the same weight?}
-        \note{If all particles have the same weight, it's like having a sensor that provides no information.}
-        \note{If all particles have the same weight, resampling will randomly select and duplicate some particles, while others will not be selected and will "die." This happens without any particle being better than another, leading the system to converge to an arbitrary location.}
-        \note{Therefore, if all particles have the same weight, there is no reason to prefer one over another.}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Low Variance Resampling Idea}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
-    \begin{center}
-        \only<1>{\includegraphics[width=0.7\textwidth]{./images/particle_filter/low_variance_resampling.pdf}}
-        \only<2>{\includegraphics[width=0.7\textwidth]{./images/particle_filter/low_variance_resampling2.pdf}}
-    \end{center}
-    \begin{enumerate}
-        \item<1-> Generate a random value $r$ between 0 and $\dfrac{1}{J}$.
-        \item<2> Select $J-1$ particles in $\dfrac{1}{J}$ steps (based on cumulative weight).
-    \end{enumerate}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Low Variance Resampling}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
-    \begin{center}
-        \only<1>{\includegraphics[width=0.7\textwidth]{./images/particle_filter/low_variance_resampling3.pdf}}
-        \only<2>{\includegraphics[width=0.7\textwidth]{./images/particle_filter/low_variance_resampling4.pdf}}
-    \end{center}
-    \begin{enumerate}
-        \item<1-> Generate a random value $r$ between 0 and $\dfrac{1}{J}$.
-        \item<2>
-        \begin{algorithmic}[1]
-            \For{$j = 1$ to $J$}
-                \State $U = r + (j - 1) \dfrac{1}{J}$
-                \While{$(U > \text{cum}[i])$}
-                    \State $i++$
-                \EndWhile
-                \State Add $x_t^{[i]}$ to $\bar{\mathcal{X}}_t$
-            \EndFor
-        \end{algorithmic}
-    \end{enumerate}
-\end{frame}
 
 \begin{frame}
     \frametitle{Low Variance Resampling}
