@@ -159,29 +159,38 @@
 
     How to sample using other distributions?
 
-    \note{Importance Sampling Principle technique}
+    \note{Rejection sampling technique. Not used in particle filters because it is a very inefficient technique.}
+
+    \note{Importance Sampling Principle Technique}
 \end{frame}
 
 \begin{frame}
     \frametitle{Importance Sampling Principle}
-    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
-
+    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
+    
     \scriptsize
-
+    
     \begin{itemize}
-        \item We can use a different distribution $\pi$ to generate samples from target distribution $f$
-        \item Compensate differences using weights $w = f(x) / \pi(x)$
-        \item Target distribution $f$
-        \item Proposal distribution $\pi$
-        \item Precondition: $f(x) > 0 \implies \pi(x) > 0$
+        \item We can use a different distribution $\pi$ to generate samples from a distribution $f$ (the one we actually want to use for sampling)
+        \item Consider the ``differences between $\pi$ and $f$'' using a weight $w = f(x) / \pi(x)$
+        \item Target Distribution Function (\emph{target}) $f$
+        \item Proposed Distribution Function (\emph{Proposal}) $\pi$
+        \item Precondition:
+        $f(x) > 0 \implies \pi(x) > 0$
         
+        \note{The precondition is required since if there is a case where f(x) > 0 and pi(x) < 0 means that there is zero probability of generating that sample with the function pi (proposal), and therefore we will never be able to generate a sample for f (target). We cannot adequately approximate f. Furthermore, it can be seen that for the calculation of the weights w, if pi(x) = 0, then we would have an undefined (infinite) weight, which is not what we want.}
+
         \begin{center}
-        \includegraphics[width=0.4\textwidth]{./images/particle_filter/importance_sampling_principle.pdf}
+            \includegraphics[width=0.4\textwidth]{./images/particle_filter/importance_sampling_principle.pdf}
         \end{center}
-        
-        Larger differences between target and proposal yield higher weights
+
+        The greater the difference between the value of the $target$ function and the $proposal$ function, the more weight is assigned to the sample (higher bars). Note that the proposal function determines the frequency of the samples. In this case, for the highest part of the target function, there are few samples, but they have a high weight.
+    
     \end{itemize}
+    
+    \note{The Importance Sampling Principle tells us that we can use a proposal distribution to generate samples from a target distribution (the one we actually want to sample from), compensating for any errors we make. Errors here mean the difference between the value of the red curve and the blue curve. To do this, we must be able to evaluate the proposal function and the target function for the same input and calculate the weight w. The weights are used to compensate.}
 \end{frame}
+
 
 \begin{frame}
     \frametitle{Particle Filter for Dynamic State Estimation}
