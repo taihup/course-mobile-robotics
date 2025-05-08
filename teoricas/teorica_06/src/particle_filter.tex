@@ -263,44 +263,48 @@
     \frametitle{Monte Carlo Localization}
     \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
 
-    Monte Carlo Localization: Particle Filter for robot localization
+    Monte Carlo Localization: Particle Filter for robot localization.
 \end{frame}
 
 \begin{frame}
     \frametitle{Monte Carlo Localization}
-    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
-
+    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
+    
     \begin{itemize}
         \item Each particle is a pose hypothesis
-        \item Proposal is motion model:
-        \begin{equation*}
-            x_t^{[j]} \sim p(x_t | x_{t-1}, u_t)
-        \end{equation*}
-        \item Correction via observation model:
-        \begin{equation*}
-            w_t^{[j]} \propto p(z_t | x_t, m)
-        \end{equation*}
+        \item \emph{Proposal} is the motion model
+            \begin{equation*}
+                \state_t^{[j]} \sim p(\state_{t} \, | \, \state_{t-1}, \controlCommand_{t})
+            \end{equation*}
+        
+            Here, we sample from the \emph{proposal} distribution $p(\state_{t} \, | \, \state_{t-1}, \controlCommand_{t})$. Note that since $\controlCommand_{t}$ is noisy, each particle moves with a certain degree of variance. For example, if $\controlCommand_{t}$ says the robot moved \SI{1}{\meter} then there will be one particle moving \SI{0.97}{\meter}, another \SI{1.02}{\meter}, etc.
+        
+        \item Correction via the observation model
+            \begin{equation*}
+                w_t^{[j]} = \frac{target}{proposal} \propto p(z_t \, | \, x_t, m)
+            \end{equation*}
+        \note{it is proportional because we normalized the weights so that their sum is 1.}
     \end{itemize}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Particle Filter for Localization}
-    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
-
-    \begin{algorithmic}[1]
-        \Procedure{ParticleFilter}{$\mathcal{X}_{t-1}, u_t, z_t$}
-        \State $\bar{\mathcal{X}}_t = \mathcal{X}_t = \emptyset$
-        \For{$j = 1$ to $J$}
-            \State Sample $x_t^{[j]} \sim p(x_t | u_t, x_{t-1}^{[j]})$
-            \State $w_t^{[j]} = p(z_t | x_t^{[j]})$
-            \State $\bar{\mathcal{X}}_t = \bar{\mathcal{X}}_t + \langle x_t^{[j]}, w_t^{[j]}\rangle$
-        \EndFor
-        \For{$i = 1$ to $J$}
-            \State Draw $i \in 1,\ldots,J$ with probability $\propto w_t^{[i]}$
-            \State Add $x_t^{[i]}$ to $\mathcal{X}_t$
-        \EndFor
-        \State return $\mathcal{X}_t$
-    \EndProcedure
+\begin{frame} 
+    \frametitle{Particle Filter for Localization} 
+    \note{Information taken from Cyrill Stachniss Video https://youtu.be/MsYlueVDLI0} 
+    
+    \begin{algorithmic}[1] 
+        \Procedure{ParticleFilter}{$\mathcal{X}_{t-1}, u_{t}, z_{t}$} 
+        \State $\bar{\mathcal{X}}_t = \mathcal{X}_t = \emptyset$ 
+        \For{$j = 1$ to $J$} 
+        \State Sample \alert{$x_t^{[j]} \sim p(x_t \, | \, u_t, x_{t-1}^{[j]})$} 
+        \State $w_t^{[j]} = \alert{p(z_t \, | \, x_t^{[j]})}$ 
+        \State $\bar{\mathcal{X}}_t = \bar{\mathcal{X}}_t + \langle x_t^{[j]}, w_t^{[j]}\rangle$ 
+        \EndFor 
+        \For{$i = 1$ to $J$} 
+        \State Draw $i \in 1,\ldots,J$ with probability $\propto w_t^{[i]}$ 
+        \State Add $x_t^{[i]}$ to $\mathcal{X}_t$ 
+        \EndFor 
+        \State return $\mathcal{X}_t$ 
+        \EndProcedure 
     \end{algorithmic}
 \end{frame}
 
