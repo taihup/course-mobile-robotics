@@ -1,41 +1,41 @@
 \begin{frame}
-    \frametitle{Definición del Problema de SLAM}
-    \note{Información extraída de https://www.youtube.com/watch?v=X30sEgIws0g}
-    \note{Información extraída de https://www.ipb.uni-bonn.de/html/teaching/photo12-2021/2021-pho2-16-ekf-slam.pptx.pdf}
-
-    Dado:
+    \frametitle{SLAM Problem Definition}
+    \note{Information taken from https://www.youtube.com/watch?v=X30sEgIws0g}
+    \note{Information taken from https://www.ipb.uni-bonn.de/html/teaching/photo12-2021/2021-pho2-16-ekf-slam.pptx.pdf}
+    
+    Given:
     \begin{itemize}
-        \item Comandos de control enviados
-        
-        \begin{equation*}
+        \item Control Commands Sent
+    
+            \begin{equation*}
             \controlCommand_{1:T} = \{\controlCommand_1, \controlCommand_2, \ldots, \controlCommand_T\}
-        \end{equation*}
-        \item Observaciones
-        \begin{equation*}
-            \observation_{1:T} = \{\observation_1, \observation_2, \ldots, \observation_T\}
-        \end{equation*}
-    \end{itemize}
-
-    Se busca:
-    \begin{itemize}
-        \item Mapa del entorno: $\map$
-        \item Trayectoria (o pose actual) del vehículo:
-        \begin{equation*}
-            \state_{0:T} = \{\state_0, \state_1, \ldots, \state_T\} \qquad \text{or} \qquad \state_{t}
-        \end{equation*}
+            \end{equation*}
+        \item Observations
+            \begin{equation*}
+            \observation_{1:T} = \{\observation_1, \observation_2, \ldots, \observation_T\} 
+            \end{equation*} 
+    \end{itemize} 
+    
+    Wanted: 
+    \begin{itemize} 
+        \item Environment map: $\map$ 
+        \item Trajectory (or current pose) of the vehicle: 
+        \begin{equation*} 
+        \state_{0:T} = \{\state_0, \state_1, \ldots, \state_T\} \qquad \text{or} \qquad \state_{t} 
+        \end{equation*} 
     \end{itemize}
 \end{frame}
-
+    
 \begin{frame}
-    \frametitle{Bayes Filter}
-    \note{Información extraída de https://www.youtube.com/watch?v=X30sEgIws0g}
-    \note{Información extraída de https://www.ipb.uni-bonn.de/html/teaching/photo12-2021/2021-pho2-16-ekf-slam.pptx.pdf}
-
-    \begin{itemize}
-        \item Recursive filter with \textbf{prediction} and \textbf{correction} steps
-        \item Estimates: $p(x_t, \map | \observation_{1:t}, \controlCommand_{1:t})$
-        \item Kalman Filter is a recursive Bayes Filter for the \textbf{linear Gaussian case}
-        \item \textbf{EKF} for dealing with \textbf{non-linearities}
+    \frametitle{Bayes Filter} 
+    \note{Information taken from https://www.youtube.com/watch?v=X30sEgIws0g} 
+    \note{Information extracted from https://www.ipb.uni-bonn.de/html/teaching/photo12-2021/2021-pho2-16-ekf-slam.pptx.pdf} 
+    
+    \begin{itemize} 
+        \item Recursive filter with \textbf{prediction} and \textbf{correction} steps 
+        \item Estimates: $p(x_t, \map | \observation _{1:t}, \controlCommand _{1:t})$ 
+        \item Kalman Filter is a recursive Bayes Filter for the \textbf{linear Gaussian case} 
+        \item \textbf{EKF} for dealing with \textbf{non-linearities} 
     \end{itemize}
 \end{frame}
 
@@ -70,7 +70,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Algoritmo de Filtro de Kalman Extendido}
+    \frametitle{Extended Kalman Filter Algorithm}
     \note{Información extraída de https://www.youtube.com/watch?v=X30sEgIws0g}
     \note{Información extraída de https://www.ipb.uni-bonn.de/html/teaching/photo12-2021/2021-pho2-16-ekf-slam.pptx.pdf}
     
@@ -456,7 +456,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Algoritmo de Filtro de Kalman Extendido}
+    \frametitle{Extended Kalman Filter Algorithm}
     \note{Información extraída de https://www.youtube.com/watch?v=X30sEgIws0g}
     \note{Información extraída de https://www.ipb.uni-bonn.de/html/teaching/photo12-2021/2021-pho2-16-ekf-slam.pptx.pdf}
     
@@ -550,7 +550,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Algoritmo de Filtro de Kalman Extendido}
+    \frametitle{Extended Kalman Filter Algorithm}
     \note{Información extraída de https://www.youtube.com/watch?v=X30sEgIws0g}
     \note{Información extraída de https://www.ipb.uni-bonn.de/html/teaching/photo12-2021/2021-pho2-16-ekf-slam.pptx.pdf}
     
@@ -699,7 +699,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Algoritmo de Filtro de Kalman Extendido}
+    \frametitle{Extended Kalman Filter Algorithm}
     \note{Información extraída de https://www.youtube.com/watch?v=X30sEgIws0g}
     \note{Información extraída de https://www.ipb.uni-bonn.de/html/teaching/photo12-2021/2021-pho2-16-ekf-slam.pptx.pdf}
     
@@ -733,7 +733,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Algoritmo de Filtro de Kalman Extendido}
+    \frametitle{Extended Kalman Filter Algorithm}
     \note{Información extraída de https://www.youtube.com/watch?v=X30sEgIws0g}
     \note{Información extraída de https://www.ipb.uni-bonn.de/html/teaching/photo12-2021/2021-pho2-16-ekf-slam.pptx.pdf}
     
@@ -998,7 +998,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Algoritmo de Filtro de Kalman Extendido}
+    \frametitle{Extended Kalman Filter Algorithm}
     \note{Información extraída de https://www.youtube.com/watch?v=X30sEgIws0g}
     \note{Información extraída de https://www.ipb.uni-bonn.de/html/teaching/photo12-2021/2021-pho2-16-ekf-slam.pptx.pdf}
     
