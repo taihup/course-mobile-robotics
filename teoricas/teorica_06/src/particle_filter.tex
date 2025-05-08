@@ -193,40 +193,49 @@
 
 
 \begin{frame}
-    \frametitle{Particle Filter for Dynamic State Estimation}
-    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
-
+    \frametitle{Particle Filter for Dynamic State Estimation Problems}
+    \note{Information taken from the video by Cyrill Stachniss https://youtu.be/MsYlueVDLI0}
+    
     \begin{itemize}
-        \item Implements Recursive Bayesian Filter (prediction + correction steps)
-        \item Non-parametric approach (handles non-Gaussian distributions)
-        \item Models distribution through samples
-        \item \textbf{Prediction}: Sample from proposal distribution
-        \item \textbf{Correction}: Weight by target/proposal ratio
-        \item \alert{More samples yield better estimates!}
+        \item PF implements a Recursive Bayesian Filter (performs a Prediction step and a Correction step)
+        \item Nonparametric approach (allows working with non-Gaussian distributions)
+        \item Models the distribution using samples
+        \item \textbf{Prediction}: extract from the \emph{proposal} distribution
+        \item \textbf{Correction}: weighting with the ratio between the \emph{target} and the \emph{proposal} distribution
+        \item \alert{The more samples we use, the better the estimate!}
     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Particle Filter Algorithm}
-    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
-
+    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
+    
     \begin{enumerate}
-        \item Sample particles using proposal distribution:
-        \begin{equation*}
-            x_{t}^{[j]} \sim \pi(x_t) 
-        \end{equation*}
-        \item Compute importance weights:
-        \begin{equation*}
-            w_t^{[j]} = \frac{p(x_t^{[j]})}{\pi(x_t^{[j]})}
-        \end{equation*}
-        \item Resampling: Select particle $i$ with probability $\propto w_t^{[j]}$, repeat $J$ times
+        \item Sample the particles using the \emph{proposal} distribution.
+            \begin{equation*}
+                x_{t}^{[j]} \sim proposal(x_{t} | \ldots) \qquad \text{(analogous to sampling the red curve)}
+            \end{equation*}
+        \item Calculate the importance weights
+            \begin{equation*}
+                w_t^{[j]} = \frac{target(x_t^{[j]})}{proposal(x_t^{[j]})} \qquad \text{{(weights to compensate for the differences between \emph{proposal} and \emph{target})}}
+            \end{equation*}
+        \item Resampling: Take particle $i$ with probability $w_{t}^{[j]}$ and repeat $J$ times.
+            \note{Note that in resampling we are replacing the weight of a sample by the frequency of this sample. That is, the more weight a sample has, the more often we will choose it.}
+            
+            \note{Also, in resampling, by choosing samples with greater weight and not choosing samples with less weight, we are better describing the probability distribution mass since particles with less weight do not contribute much to the probability distribution mass, and this allows for better use of the computer's memory.}
+            
+            (that is, we generate compensating samples)
     \end{enumerate}
-
-    Connection to Recursive Bayesian Filter:
+    \note{Replacing unlikely samples with more likely ones}
+    
+    \vspace{1cm}
+    
+    Interpreting PF with the Recursive Bayes Filter:
     \begin{itemize}
-        \item Step 1: Prediction using motion model
-        \item Steps 2-3: Correction using observation model
+        \item Step 1 corresponds to the Prediction Step using the motion model, and
+        \item Steps 2 and 3 correspond to the Correction Step using the observation model to calculate the weights.
     \end{itemize}
+    
 \end{frame}
 
 \begin{frame}
