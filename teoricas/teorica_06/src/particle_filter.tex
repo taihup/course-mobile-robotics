@@ -353,11 +353,11 @@
     \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
 
     \begin{itemize}
-        \item Select particle $i$ with probability $\propto w_t^{[i]}$, repeat $J$ times
-        \item "Replace unlikely samples with more probable ones"
+        \item Take particle $i$ with probability $w_t^{[i]}$. Repeat $J$ times.
+        \item Informally: ``Replace unlikely samples with more likely ones''
         \item Survival of the fittest
-        \item Prevents wasting samples on low-probability states
-        \item Necessary due to finite memory (limited particles)
+        \item ``Trick'' to prevent many samples from covering unlikely states
+        \item Necessary, since we have a limited number of samples (finite memory)
     \end{itemize}
 \end{frame}
 
