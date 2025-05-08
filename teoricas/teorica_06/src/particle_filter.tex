@@ -384,9 +384,9 @@
     }
     \begin{itemize}
         \item Roulette Wheel
-        \item Bucket size corresponds to particle weight
-        \item Requires $J$ selections
-        \item Binary search determines selected bucket ($O(J \log J)$)
+        \item The roulette wheel's buckets represent the weights of the particles. The larger the bucket, the more likely it is that the particle will be selected.
+        \item We have to do this $J$ times. We have to find where the ball lands. We can do this with binary search. The sum of all the roulette wheel's weights is 1. If we roll a random number between 0 and 1, then with binary search we can find out which bucket it lands in.
+        \item Binary search to find out which bucket the ball lands in ($O(J \log(J))$)
     \end{itemize}
 \end{frame}
 
@@ -396,24 +396,25 @@
 
     \footnotesize
 
-    \begin{overlayarea}{\textwidth}{\textheight}
-        \only<1>{
-            \begin{center}
-                \includegraphics[width=0.3\textwidth]{./images/particle_filter/resampling_stochastic_universal_sampling1.pdf}
-            \end{center}
-        }
-        \only<2>{
-            \begin{center}
-                \includegraphics[width=0.3\textwidth]{./images/particle_filter/resampling_stochastic_universal_sampling2.pdf}
-            \end{center}
-        }
+    \only<1>{
+        \begin{center}
+            \includegraphics[width=0.3\textwidth]{./images/particle_filter/resampling_stochastic_universal_sampling1.pdf}
+        \end{center}
+    }
+    \only<2>{
+        \begin{center}
+            \includegraphics[width=0.3\textwidth]{./images/particle_filter/resampling_stochastic_universal_sampling2.pdf}
+        \end{center}
+    }
 
-        \begin{itemize}
-            \item Stochastic Universal Sampling (using $J$ equidistant arrows)
-            \item Also called Low-Variance Resampling
-            \item Linear computational cost $O(J)$
-        \end{itemize}
-    \end{overlayarea}
+    \begin{itemize}
+        \item Stochastic universal sampling (using $J$ equidistant arrows)
+        \item Also called \emph{Low-Variance Resampling} (prevents particles from concentrating quickly)
+        \item Using J arrows and equidistant them. We rotate them all together and select J particles. So when we roll a random number, all J particles are selected at once.
+        \item Has a linear computational cost of $O(J)$ because we only have to iterate through the weights once to see where all the arrows fall.
+    \end{itemize}
+
+    \note{Example 8 arrows 45 degrees apart from each other.}
 \end{frame}
 
 
