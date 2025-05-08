@@ -417,6 +417,84 @@
     \note{Example 8 arrows 45 degrees apart from each other.}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Resampling}
+    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
+    
+    \begin{itemize}
+        \item Sampling with replacement (we sample by taking a particle and then placing it back in the bag)
+        \item Roulette Wheel resampling is easy to understand but suboptimal in practice
+        \item \alert{What happens if all the particles have the same weight?}
+        \note{If all the particles have the same weight, it would be like having a sensor that gives me no information.}
+        \note{If all the particles have the same weight, resampling will randomly select particles and duplicate them, and other particles will not be selected and will die. And this happens without one particle being better than another. This leads the system to converge at any location.} 
+        \note{Therefore, if all the particles have the same weight then it does not make sense to choose one over the other.} 
+        
+        \note{ 
+        https://robotics.stackexchange.com/questions/16093/why-does-the-low-variance-resampling-algorithm-for-particle-filters-work 
+        
+        TLDR; A particle filter’s convergence rate is inversely proportional to the variance in the parents’ offspring counts. Low variance means fast convergence. 
+        
+        NOTE: Below, I discuss (but never explicitly mention) the concept of variance effective population size. 
+        
+        The effectiveness of this resampling strategy makes a lot of sense when you consider that the particle filter is, at its core, an evolutionary algorithm (EA). All EAs tend to lose diversity because of the random sampling step, at a rate proportional to the variance in how many offspring the parents produce. This effect is known as genetic drift, and it adversely affects biological populations as well. As a result of this diversity loss, the EA prematurely converges to suboptimal solutions. This is bad news. 
+        
+        Intuitively, genetic drift makes sense. When parents are chosen at random (the most common setup), those with low fitness/quality are likely to get skipped and produce zero offspring and be eliminated from the gene pool, thus reducing the population's diversity. Now, the rate at which natural selection improves a population's fitness is directly proportional to the population's diversity—diversity is literally the fuel that drives natural selection. Genetic drift reduces the diversity, thus decreasing the rate at which the population's fitness can improve and causing the aforementioned bad news. 
+        
+        Let's now look at the low-variance resampling method. This method gives almost every parent exactly the number of offspring that they would be expected to obtain with the random sampling, without the extra uncertainty (variance). This reduces genetic drift and greatly increases the efficiency with which the particle filter can improve its solution and/or adapt to changing conditions 
+        } 
+        
+    \end{itemize}
+\end{frame}
+
+\begin{frame} 
+    \frametitle{Low Variance Resampling Idea} 
+    \note{Information taken from Cyrill Stachniss Video https://youtu.be/MsYlueVDLI0} 
+    
+    \begin{center} 
+        \only<1>{\includegraphics[width=0.7\textwidth]{./images/particle_filter/low_variance_resampling1.pdf}} 
+        \only<2>{\includegraphics[width=0.7\textwidth]{./images/particle_filter/low_variance_resampling2.pdf}} 
+    \end{center} 
+    
+    \begin{enumerate} 
+        \item<1-> We take a random value $r$ between 0 and $\dfrac{1}{j}$ 
+        \item<2> We take $J-1$ particles in $\dfrac{1}{J}$ steps (based on accumulated weight) 
+    \end{enumerate}
+    
+\end{frame}
+
+\begin{frame} 
+    \frametitle{Low Variance Resampling: Efficient Implementation} 
+    \note{Information taken from Cyrill Stachniss Video https://youtu.be/MsYlueVDLI0} 
+    
+    \begin{center} 
+        \only<1>{\includegraphics[width=0.7\textwidth]{./images/particle_filter/low_variance_resampling_efficient_implementation1.pdf}} 
+        \only<2>{\includegraphics[width=0.7\textwidth]{./images/particle_filter/low_variance_resampling_efficient_implementation2.pdf}} 
+    \end{center} 
+    
+    \begin{enumerate} 
+        \item<1-> We take a random value $r$ between 0 and $\dfrac{1}{j}$ 
+        \item<2> 
+        \begin{algorithmic}[1] 
+            \For{$j = 1$ to $J$} 
+            \State $U = r + (j - 1) \dfrac{1}{J}$ 
+            \While{$\left(U > cum[i]\right)$} 
+            \State $i++$ 
+            \EndWhile 
+            \State Add $x_t^{[i]}$ to $\bar{\mathcal{X}}_t$ 
+            \EndFor 
+        \end{algorithmic} 
+        % \begin{fleqn}[\parindent] 
+        % \begin{align*} 
+        % for &(j=1 \dots J)\\ 
+        % &U = r + j \dfrac{1}{J}\\ 
+        % &while (U > cum[i]) \quad i++;\\ 
+        % &pick\_particle(i) 
+        % \end{align*} 
+        % \end{fleqn} 
+    \end{enumerate}
+    
+\end{frame}
+
 
 \begin{frame}
     \frametitle{Low Variance Resampling}
@@ -441,64 +519,66 @@
 
 \begin{frame}
     \frametitle{Low Variance Resampling}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
+    
     \begin{itemize}
-        \item Performs resampling that preserves samples when they have equal weights.
-        \item Faster than Roulette Wheel resampling: $\mathcal{O}(J)$ vs. $\mathcal{O}(J \log J)$.
+        \item Performs resampling that keeps samples if they have equal weights.
+        \item It's faster than roulette wheel resampling: $O(J)$ vs. $O(J \log J)$
         \item \alert{We will always use Low Variance Resampling!}
     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Disadvantages of Particle Filter}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
+    
     \begin{itemize}
-        \item Does not scale well for high-dimensional spaces.
-        \note{PF becomes computationally expensive because many particles are needed to cover the probability distribution. PF works well for low dimensions, up to 4, but beyond that, heuristics are needed to reduce the number of particles while keeping them representative.}
-        \note{The number of particles grows exponentially with the state dimensions.}
-        \item Problematic in situations with high uncertainty.
-        \item \emph{Depletion Problem} (most particles have low weight).
-        \note{The Depletion Problem: occurs when we have too few particles relative to the state dimensionality. The particles do not cover high-probability areas, causing them to "die" and the filter to eventually diverge.}
-        \note{Example: Imagine 100 particles tracking a robot's position. If the robot makes a sharp turn, many particles will have low weights because they poorly predict the motion. After resampling, only a few particles "survive," and the filter loses diversity, affecting future estimates.}
+        \item Does not scale well for high-dimensional spaces
+        \note{PF becomes very computationally expensive since we will need many particles to cover the probability distribution. PF works well for low dimensions; up to 4 is possible, but more requires adopting certain heuristics to reduce the number of particles and ensure they are representative.}
+        \note{The number of particles grows exponentially with the dimensions of the state}
+        \item Problematic in situations with high uncertainty
+        \item \emph{Depletion Problem} (most particles have low weights)
+        \note{The Depletion Problem: occurs when we have very few particles compared to the dimensionality of the state. The particles do not cover the areas of highest probability and therefore die, causing the filter to eventually diverge.
+        Example: Imagine you have 100 particles tracking the position of a robot. If the robot makes a sharp turn, many particles will have low weights because they do not predict the movement well. After resampling, only a few particles will "survive," and the filter will lose diversity, affecting future estimates.}
     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Advantages}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
+    
     \begin{itemize}
-        \item Can work with non-Gaussian distributions.
-        \item Works well in low-dimensional spaces.
-        \item Can handle ambiguities in data association.
-        \note{We can let each particle have its own way of associating data. Since there is no uncertainty associated with this, we can make decisions dependent on each particle and see which one survives.}
-        \item Can easily incorporate different sensing modalities.
-        \note{We can incorporate different sensing modalities by simply multiplying the weight with the computed weight from another sensor.}
-        \item Robust.
-        \note{Robust because even when models are imperfect, it can still compute good beliefs.}
-        \item Easy to implement.
+        \item Can work with non-Gaussian distributions
+        \item Works well in low-dimensional spaces
+        \item Can handle ambiguities in data associations. \note{We can make each particle have its own way of associating data. Since there is no uncertainty associated with this, we can make decisions dependent on each particle and see which survives.}
+        \item Can easily incorporate different sensing modalities \note{We can incorporate different sensing modalities by simply multiplying the weight with the computed weight of another sensor}
+        \item Robust \note{Robust because even when the models are not perfect, it will be able to compute good beliefs}
+        \item Easy to implement
     \end{itemize}
 \end{frame}
-
+    
 \begin{frame}
     \frametitle{Summary – Particle Filter}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
+    
     \begin{itemize}
-        \item Particle filters are recursive, non-parametric Bayesian filters.
-        \item The posterior belief is represented by a set of weighted samples.
-        \item Not limited to Gaussian distributions.
-        \item Proposal to draw samples at $t+1$.
-        \item Weight to account for differences between the proposal and target.
-        \item The art lies in designing suitable motion and sensing models.
+        \item Particle filters are recursive, non-parametric Bayesian filters
+        \item The Posterior Belief is represented by an ensemble of weighted samples
+        \item Not limited to Distributions Gaussians
+        \item Proposal for extracting samples at $t+1$
+        \item Weight to account for differences between the proposal and the target
+        \item The art lies in designing appropriate motion and sensing models
     \end{itemize}
 \end{frame}
-
+    
 \begin{frame}
     \frametitle{Summary – Localization with PF}
-    \note{Information extracted from Cyrill Stachniss' video https://youtu.be/MsYlueVDLI0}
+    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
+    
     \begin{itemize}
-        \item Particles are propagated according to the motion model.
-        \item Weighted by the observation probability.
-        \item Called Monte Carlo Localization (MCL).
-        \item MCL is the gold standard for mobile robot localization in \emph{indoor} environments.
+        \item Particles propagate according to the motion model
+        \item They are weighted according to the probability of the observation
+        \item This is called Monte Carlo Localization (MCL)
+        \item MCL is a gold standard for localizing mobile robots in \emph{indoor} environments
     \end{itemize}
 \end{frame}
