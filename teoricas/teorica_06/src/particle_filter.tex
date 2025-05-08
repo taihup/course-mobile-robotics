@@ -3,11 +3,11 @@
     \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
     \footnotesize
     \begin{itemize}
-        \item EKF is limited to Gaussian distributions
-        \item With EKF we obtain a Gaussian distribution describing the robot's location
-        \item Particle Filters use particles/hypotheses representing possible robot positions
-        \item Instead of parametric forms (like EKF with mean $\mu$ and covariance $\covariance$), Particle Filters use non-parametric samples as hypotheses
-    \end{itemize}
+        \item With EKF, we are restricted to Gaussian distributions.
+        \item When using EKF, we obtain a Gaussian distribution that describes where the robot is located.
+        \item In Particle Filter, we use particles or hypotheses that describe where the robot could be.
+        \item Instead of having a parametric form like EKF, which describes the probability distribution with the parameters mean $\mu$ and covariance $\covariance$, Partible Filter uses non-parametric samples as hypotheses about where the robot could be.
+        \end{itemize}
     
     \begin{center}
         \movie[loop]{\includegraphics[width=0.4\columnwidth]{images/particle_filter/particle_filter_video.jpg}}{videos/particle_filter.mp4}
@@ -26,8 +26,9 @@
     \end{itemize}
     
     \begin{center}
-    \includegraphics[width=0.5\columnwidth]{./images/particle_filter/arbitrary_distribution.pdf}
+        \includegraphics[width=0.5\columnwidth]{./images/particle_filter/arbitrary_distribution.pdf}
     \end{center}
+
 \end{frame}
 
 \begin{frame}
@@ -36,16 +37,17 @@
     \footnotesize
     \begin{itemize}
         \item \textbf{Multiple samples} to represent an arbitrary probability distribution
-        \item Samples cluster in some areas more than others - density indicates likelihood
-        \item Each sample accumulates "probability mass"
-        \item Samples approximate the probability density function (pdf)
-        \item To get the pdf, integrate over an area to obtain the probability mass
-        \item More particles where pdf is high, fewer where low
+        \item The samples are more clustered in some areas and less so in others. The number of particles per unit area describes how likely it is that the robot is in that area.
+        \item Each sample accumulates a bit of "probability mass."
+        \item The sample can be thought of as an approximation to the probability density function (pdf).
+        \item To obtain the pdf, you have to integrate over a certain area to obtain the probability mass of the robot being in that area.
+        \item Therefore, where the pdf is high, we will have more particles, and where the pdf is low, we will have fewer particles.
     \end{itemize}
     
     \begin{center}
-    \includegraphics[width=0.5\columnwidth]{./images/particle_filter/arbitrary_distribution_samples.pdf}
+        \includegraphics[width=0.4\columnwidth]{./images/particle_filter/arbitrary_distribution_samples.pdf}
     \end{center}
+
 \end{frame}
 
 \begin{frame}
@@ -53,14 +55,15 @@
     \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
     \footnotesize
     \begin{itemize}
-        \item Alternative: Use \textbf{weighted samples} to reduce required particle count
-        \item Higher weight indicates more probability mass in that region
-        \item All weights must sum to 1
-        \item Initially, uniform weights can be assigned (e.g., $1/n$ for $n$ samples)
+        \item Instead of using sample accumulation to represent an arbitrary probability distribution, we can use \textbf{Multiple Weighted Samples}
+        \item We can reduce the number of samples we need by adding weights to each sample.
+        \item The more weight a sample has, the more probability mass there is in that region.
+        \item The weights of all the samples together should sum to 1.
+        \item Initially, we could add a uniform weight to each sample. For example, if we have $n$ samples, then each sample has weight $\frac{1}{n}$
     \end{itemize}
     
     \begin{center}
-        \includegraphics[width=0.5\columnwidth]{./images/particle_filter/arbitrary_distribution_weighted_samples.pdf}
+        \includegraphics[width=0.4\columnwidth]{./images/particle_filter/arbitrary_distribution_weighted_samples.pdf}
     \end{center}
 \end{frame}
 
@@ -69,39 +72,43 @@
     \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
     \footnotesize
     \begin{itemize}
-        \item Note this is an approximation of the PDF (Probability Density Function)
-        \item Sufficient samples are needed to properly represent the PDF
+        \item Note that this is an approximation of the PDF (\emph{Probabilistic Density Function})
+        \item It is important to have a sufficient number of samples to be able to adequately represent the PDF.
     \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Particle Set}
-    \note{Content from Cyrill Stachniss's video: https://youtu.be/MsYlueVDLI0}
+    \frametitle{Particle Ensemble}
+    \note{Information taken from Cyrill Stachniss's video https://youtu.be/MsYlueVDLI0}
     
     \begin{itemize}
-        \item Weighted particle set:
-            
+        \item Weighted Particle Ensemble
+        
         \begin{center}
             \includegraphics[width=0.5\columnwidth]{./images/particle_filter/weighted_samples.pdf}
         \end{center}
-
-        \item Particles represent the posterior belief:
-        \begin{equation*}
-            p(x) = \sum_{j=1}^{J} w^{[j]} \delta_{x^{[j]}}(x)    
-        \end{equation*}
-        where $\delta_{x^{[j]}}(x)$ is the Dirac delta centered at particle $x^{[j]}$
-
-        \begin{equation*}
-            \delta(y) = 
-            \begin{cases} 
-            \infty, & y = x^{[j]} \\ 
-            0, & y \neq x^{[j]} 
-            \end{cases}    
-        \end{equation*}
-
-        \note{The Dirac delta models impulses/events}
-        \note{More particles are needed for more complex pdfs}
+        
+        \item The particles represent the posterior belief given by
+            \begin{equation*}
+                p(x) = \sum_{j=1}^{J} w^{[j]} \delta_{x^{[j]}}(x)
+            \end{equation*}
+            where $\delta_{x^{[j]}}(x)$ is the Dirac function centered at the location of particle $x^{[j]}$.
+            
+            \begin{equation*}
+                \delta(y) =
+                \begin{cases}
+                \infty, & y = x^{[j]} \\
+                0, & y \neq x^{[j]}
+                \end{cases};
+            \end{equation*}
+        
+            \note{The Dirac function simulates impulses or events}
+            \note{The Dirac function tends to infinity when $x=j$ and, for any other value of $x$, it is equal to 0.}
+            
+            \note{We will need a greater number of particles the more complex the pdf is}
+    
     \end{itemize}
+    
 \end{frame}
 
 \begin{frame}
@@ -298,29 +305,27 @@
 
     \scriptsize
 
-    \begin{overlayarea}{\textwidth}{\textheight}
-        \only<1>{
-            \begin{center}
-                \includegraphics[width=0.3\textwidth]{./images/particle_filter/resampling_rulette_wheel1.pdf}
-            \end{center}
-        }
-        \only<2>{
-            \begin{center}
-                \includegraphics[width=0.3\textwidth]{./images/particle_filter/resampling_rulette_wheel2.pdf}
-            \end{center}
-        }
-        \only<3>{
-            \begin{center}
-                \includegraphics[width=0.3\textwidth]{./images/particle_filter/resampling_rulette_wheel3.pdf}
-            \end{center}
-        }
-        \begin{itemize}
-            \item Roulette Wheel
-            \item Bucket size corresponds to particle weight
-            \item Requires $J$ selections
-            \item Binary search determines selected bucket ($O(J \log J)$)
-        \end{itemize}
-    \end{overlayarea}
+    \only<1>{
+        \begin{center}
+            \includegraphics[width=0.3\textwidth]{./images/particle_filter/resampling_rulette_wheel1.pdf}
+        \end{center}
+    }
+    \only<2>{
+        \begin{center}
+            \includegraphics[width=0.3\textwidth]{./images/particle_filter/resampling_rulette_wheel2.pdf}
+        \end{center}
+    }
+    \only<3>{
+        \begin{center}
+            \includegraphics[width=0.3\textwidth]{./images/particle_filter/resampling_rulette_wheel3.pdf}
+        \end{center}
+    }
+    \begin{itemize}
+        \item Roulette Wheel
+        \item Bucket size corresponds to particle weight
+        \item Requires $J$ selections
+        \item Binary search determines selected bucket ($O(J \log J)$)
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
