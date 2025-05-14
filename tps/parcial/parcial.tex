@@ -1,0 +1,116 @@
+\documentclass[parcial]{lcc}
+
+% add latex preamble
+\input{../../common/latex_preamble}
+
+% add math preamble
+\input{../../common/math_preamble}
+
+\codigo{R-521}
+\materia{Robótica Móvil}
+\titulo{Parcial}
+
+\soluciones
+\commentstrue
+
+
+\usepackage{biblatex}
+%\addbibresource{refs.bib}
+
+\begin{document}
+\maketitle
+
+%section{Sensores}
+%\ejercicio Dibuje el árbol de transformaciones
+
+
+%\ejercicio Explique el comportamiento de la matriz de covarianza en las etapas de predicción y corrección de EKF?
+
+\ejercicio In the Practical Assignment, where and why did you apply the utils.minimized\_angle() function ?
+
+\ejercicio What is the meaning of the covariance matrix?
+
+\ejercicio Explain the behaviour of the covariance matrix in the prediction step and the correction step of the EKF?
+
+\ejercicio What are the main difference and similarities between PF and EKF?
+
+\ejercicio In PF, What could happen if all the particles have the same weight?
+
+\ejercicio In PF, What can happen if there used a too low or a too high number of particle?
+
+\ejercicio What happen if a loop closing is done in an EKF-SLAM?
+
+%\ejercicio What are the two types of Graph-SLAM techniques that we have?
+
+\ejercicio Why are the main source errors for a SLAM system?
+
+\ejercicio What is the main difference between EKF-SLAM and Graph-SLAM?
+
+
+\section*{Question 5}
+
+\begin{enumerate}
+
+\item Considere el sistema dinámico, descripto por el siguiente modelo 
+\begin{equation*}
+    x_{k+1} = \frac{1}{2}x_{k} \qquad x_{k} \in \mathbb{R}
+\end{equation*}
+El modelo es considerado perfecto.
+
+El valor inicial de la variable $x_0$ no es conocido perfectamente, es decir solo se dispone de un ``belief'' acerca de  $x_0$. Este belief es Gaussiano con valor esperado 2 y varianza $\sigma^2_{0} = 128$.
+
+(nota: las unidades usadas en ambos parametros son consistentes)
+Usted es requerido que provea predicciones para $x_k$ para los tiempos discretos $k=[1,2,3,4]$.
+
+Cada valor predicho debera ser provisto como un valor esperado y varianza associada,
+$\left(\mu_{k}, \sigma_{k}^2\right)$.
+
+\item Considere el mismo sistema mencionado en el item (a), pero ahora se considera que el modelo no es perfecto. El nuevo modelo es expresado como sigue :
+\begin{equation*}
+    x_{k+1} = \frac{1}{2}x_k + \eta_k
+\end{equation*}
+donde la componente $\eta_k$ es ruido blanco Gaussiano cuyo valor esperado es 0 y varianza 1.
+
+Se requiere que provea predicciones para $x_{k}$, para el tiempo discreto $k=2$. Su belief acerca de $x_0$ es el mismo que considero en el caso (a).
+
+\end{enumerate}
+
+Nota: Usted puede expresar los resultados usando expresiones, incluyendo fracciones, multiplicaciones, etc. NO es estrictamente necesario evaluarlas, excepto si son sencillas. Por ejemplo, una expresion tal como $(1/3 +2^3)*5$, puede ser expresada asi, sin ser evaluada.
+
+\section*{Question 6}
+Considere un sistema cuyo estado es representado, en el tiempo discreto k, por el vector
+\begin{equation*}
+    X_{k} = \begin{bmatrix}
+            x_{k}\\
+            y_{k}
+        \end{bmatrix}
+\end{equation*}
+
+Suponga que un estimado del estado (en el tiempo $k = 1$) es dado por
+
+\begin{equation*}
+\mu_{1} = \begin{bmatrix} 1 \\ 2 \end{bmatrix}, \quad \covariance_{1} = \begin{bmatrix} 1 & 1 \\ 1 & 2 \end{bmatrix}    
+\end{equation*}
+
+Suponga que en el mismo instante $k=1$ se mide cierta salida del sistema, cuya relacion functional con el estado es
+
+\begin{equation*}
+    h\left(X_{k}\right) = \left(x_{k}\right)^3 + y_{k}
+\end{equation*}
+
+La medida es realizada a traves de un sensor; la lectura es $y_{1} = 3$. Se sabe que la medida esta contaminada con ruido blanco Gaussiano, cuya desviacion estandar es $0.5$ (asuma que las unidades son consistentes). Basado en esta medicion usted realiza un update de EKF (Extended Kalman Filter) sobre los estimados actuales. Una manera de hacerlo es por medio de las siguientes operaciones:
+
+    \begin{algorithmic}[1]
+        \State $S_{k} = \observationModelJacobian_{k} \overline{\covariance}_{k} \observationModelJacobian_{k}^{\top} + \observationModelCovariance_{k} $
+
+        \State $\kalmanGain_{k} = \overline{\covariance}_{k} {\observationModelJacobian_{k}}^{\top} S_{k}^{-1} $
+        \State $\mu_{k} = \overline{\mu}_{k} + \kalmanGain_{k}(\observation_{k} - h(\overline{\mu}_{k}))$
+        \State $\covariance_{k} = (I - \kalmanGain_{k}\observationModelJacobian_{k})\overline{\covariance}_{k}$
+    \end{algorithmic}
+
+    \begin{enumerate}
+        \item Use las expresiones provistas para implementar el EKF update. E.g. especifique los valores que tomarian los siquientes elementos: $\observationModelJacobian_{k}$, $\observationModelCovariance_{k}$, $\overline{\mu}_{k}$, $\overline{\covariance}_{k}$.
+        \item Mencione qué significan (qué representan) los siguientes elementos: $\overline{\mu}_{k}$, $\overline{\covariance}_{k}$, $\mu_{k}$, $\covariance_{k}$.
+    \end{enumerate}
+
+\end{document}
